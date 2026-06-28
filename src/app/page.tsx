@@ -648,8 +648,8 @@ export default function Home() {
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
-            ? 'bg-background/80 backdrop-blur-lg shadow-sm border-b border-border/50'
-            : 'bg-transparent'
+            ? 'bg-background shadow-sm border-b border-border/60 backdrop-blur-xl'
+            : 'bg-background/95 border-b border-border/10'
         }`}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -742,658 +742,187 @@ export default function Home() {
         {/* ──────────────────────────────────────────────────────────
             2. HERO SECTION
         ────────────────────────────────────────────────────────── */}
-        <section
-          className="relative w-full min-h-[85vh] md:min-h-[90vh] flex items-center justify-center overflow-hidden"
-          aria-label="Hero"
-        >
-          {/* Background image */}
-          <Image
-            src="/images/hero-sofa.png"
-            alt="Sofa bersih oleh MAKLIN Home Cleaning Purwakarta"
-            fill
-            className="object-cover object-center"
-            priority
-            sizes="100vw"
-          />
-          {/* Dark gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
-
-          {/* Content */}
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-            <motion.h1
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-balance"
-            >
-              Jasa Cuci Sofa Purwakarta
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-              className="mt-4 text-base sm:text-lg md:text-xl font-medium text-white/90 tracking-wide"
-            >
-              Bersih Maksimal &bull; Higienis &bull; Wangi &bull; Home Service
-            </motion.p>
-
-            {/* Trust badges */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto"
-            >
-              {[
-                'Tim Profesional',
-                'Peralatan Modern',
-                'Chemical Aman',
-                'Cepat Kering',
-              ].map((b) => (
-                <div
-                  key={b}
-                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-3 py-2.5 text-sm font-medium flex items-center justify-center gap-1.5"
+        <section className="relative overflow-hidden py-16 md:py-24" aria-label="Hero">
+          <div className="absolute inset-x-0 top-0 h-40 bg-primary/5" />
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(30rem,38%)]">
+              <div className="max-w-2xl">
+                <motion.h1
+                  initial={{ opacity: 0, y: 25 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight text-slate-950"
                 >
-                  <CheckCircle className="size-4 text-green-300 shrink-0" />
-                  <span>{b}</span>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
-            >
-              <Button asChild size="lg" className="w-full sm:w-auto text-base font-bold px-8">
-                <a href={WA_URL} target="_blank" rel="noopener noreferrer">
-                  Hubungi via WhatsApp
-                </a>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto text-base font-semibold px-8 border-white/30 text-white hover:bg-white/10 hover:text-white"
-              >
-                <button onClick={() => scrollTo('#harga')}>Lihat Layanan</button>
-              </Button>
-            </motion.div>
-
-            {/* Rating */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1.0 }}
-              className="mt-6 text-sm sm:text-base text-yellow-300 font-medium flex items-center justify-center gap-1.5"
-            >
-              {'★'.repeat(5)}{' '}
-              <span className="text-white/80 ml-1">Dipercaya <Counter target={1812} suffix="+" /> Pelanggan Purwakarta</span>
-            </motion.p>
-          </div>
-        </section>
-
-        {/* ──────────────────────────────────────────────────────────
-            3. SERVICE AREAS STRIP
-        ────────────────────────────────────────────────────────── */}
-        <section className="bg-primary py-3 overflow-hidden" aria-label="Area layanan">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p className="text-primary-foreground text-center text-sm font-semibold mb-2">
-              <MapPin className="inline size-4 mr-1 -mt-0.5" />
-              Melayani Purwakarta dan Sekitarnya
-            </p>
-            <div className="flex items-center justify-center gap-2 flex-wrap">
-              {SERVICE_AREAS.map((area) => (
-                <Badge
-                  key={area}
-                  variant="secondary"
-                  className="bg-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/30 text-xs"
+                  Jasa Cuci Sofa Purwakarta
+                </motion.h1>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.4 }}
+                  className="mt-6 text-base sm:text-lg md:text-xl font-medium text-slate-600 max-w-xl"
                 >
-                  {area}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        </section>
+                  Bersih maksimal, higienis, dan harum tanpa repot. Home service sofa siap di rumah Anda.
+                </motion.p>
 
-        {/* ──────────────────────────────────────────────────────────
-            4. PROBLEMS SECTION
-        ────────────────────────────────────────────────────────── */}
-        <AnimatedSection id="layanan" className="py-16 md:py-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
-                Apakah Sofa Anda Mengalami Masalah Ini?
-              </h2>
-              <p className="mt-3 text-muted-foreground text-base sm:text-lg">
-                Jangan biarkan sofa kotor mengancam kesehatan keluarga Anda
-              </p>
-            </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  className="mt-10 flex flex-col sm:flex-row items-stretch gap-4"
+                >
+                  <Button asChild size="lg" className="w-full sm:w-auto text-base font-bold px-8">
+                    <a href={WA_URL} target="_blank" rel="noopener noreferrer">
+                      Hubungi via WhatsApp
+                    </a>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto text-base font-semibold px-8"
+                  >
+                    <button onClick={() => scrollTo('#harga')}>Lihat Layanan</button>
+                  </Button>
+                </motion.div>
 
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-60px' }}
-              className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6"
-            >
-              {PROBLEMS.map((p) => (
-                <motion.div key={p.title} variants={fadeUp}>
-                  <Card className="h-full text-center p-5 sm:p-6 hover:shadow-md transition-shadow border-border/60">
-                    <div className="mx-auto mb-3 flex items-center justify-center size-12 sm:size-14 rounded-full bg-red-50 text-red-500">
-                      <p.icon className="size-6 sm:size-7" />
+                <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-2">
+                  {[
+                    'Garansi Pengerjaan',
+                    'Teknisi Berpengalaman',
+                    'Chemical Aman',
+                    'Home Service',
+                  ].map((badge) => (
+                    <div
+                      key={badge}
+                      className="inline-flex items-center gap-2 rounded-2xl border border-border/80 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm"
+                    >
+                      <CheckCircle className="size-4 text-primary" />
+                      {badge}
                     </div>
-                    <h3 className="font-bold text-sm sm:text-base mb-1.5">{p.title}</h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                      {p.desc}
-                    </p>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            <div className="mt-10 text-center">
-              <p className="text-muted-foreground text-sm sm:text-base mb-4">
-                Sofa kotor bisa jadi sarang penyakit. Kami siap membantu!
-              </p>
-              <Button asChild variant="outline" size="lg" className="font-semibold">
-                <a href={WA_URL} target="_blank" rel="noopener noreferrer">
-                  Konsultasi Gratis <ChevronRight className="size-4" />
-                </a>
-              </Button>
-            </div>
-          </div>
-        </AnimatedSection>
-
-        {/* ──────────────────────────────────────────────────────────
-            5. WHY CHOOSE US
-        ────────────────────────────────────────────────────────── */}
-        <AnimatedSection className="py-16 md:py-24 bg-muted/40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
-                Kenapa Memilih MAKLIN?
-              </h2>
-              <p className="mt-3 text-muted-foreground text-base sm:text-lg">
-                Kami berkomitmen memberikan layanan terbaik untuk sofa Anda
-              </p>
-            </div>
-
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-60px' }}
-              className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6"
-            >
-              {WHY_US.map((item) => (
-                <motion.div key={item.title} variants={fadeUp}>
-                  <motion.div
-                    whileHover={{ y: -4, boxShadow: '0 8px 30px rgba(0,0,0,0.08)' }}
-                    className="h-full"
-                  >
-                    <Card className="h-full p-5 sm:p-6 border-border/60">
-                      <div className="flex items-center justify-center size-12 sm:size-14 rounded-full bg-primary/10 text-primary mb-3 mx-auto">
-                        <item.icon className="size-6 sm:size-7" />
-                      </div>
+                  ))}
+                </div>
+                <div className="mt-10 rounded-[1.5rem] border border-border/60 bg-card px-5 py-5 shadow-sm sm:px-6 sm:py-6">
+                  <p className="text-sm font-medium text-primary text-center">
+                    <MapPin className="inline size-4 mr-1 -mt-0.5" />
+                    Melayani Purwakarta dan Sekitarnya
+                  </p>
+                  <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+                    {SERVICE_AREAS.map((area) => (
                       <Badge
+                        key={area}
                         variant="secondary"
-                        className="mb-2 text-[10px] sm:text-xs bg-primary/10 text-primary font-semibold"
+                        className="bg-primary/10 text-primary text-[11px] font-semibold"
                       >
-                        {item.tag}
+                        {area}
                       </Badge>
-                      <h3 className="font-bold text-sm sm:text-base mb-1.5 text-center">
-                        {item.title}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-muted-foreground text-center leading-relaxed">
-                        {item.desc}
-                      </p>
-                    </Card>
-                  </motion.div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </AnimatedSection>
-
-        {/* ──────────────────────────────────────────────────────────
-            6. BEFORE / AFTER GALLERY
-        ────────────────────────────────────────────────────────── */}
-        <AnimatedSection className="py-16 md:py-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
-                Bukti Hasil Kerja Kami
-              </h2>
-              <p className="mt-3 text-muted-foreground text-base sm:text-lg">
-                Lihat sendiri perbedaan sofa sebelum dan sesudah dibersihkan
-              </p>
-            </div>
-
-            <div className="grid gap-6 md:gap-8">
-              {BEFORE_AFTER.map((item) => (
-                <motion.div
-                  key={item.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Card className="overflow-hidden border-border/60">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-base sm:text-lg font-bold">
-                        {item.label}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Before */}
-                      <div className="relative">
-                        <span className="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-md">
-                          SEBELUM
-                        </span>
-                        <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                          <Image
-                            src={item.before}
-                            alt={`Sofa ${item.label} sebelum dibersihkan`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            loading="lazy"
-                          />
-                        </div>
-                      </div>
-                      {/* After */}
-                      <div className="relative">
-                        <span className="absolute top-3 left-3 z-10 bg-primary text-primary-foreground text-xs font-bold px-2.5 py-1 rounded-md">
-                          SESUDAH
-                        </span>
-                        <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                          <Image
-                            src={item.after}
-                            alt={`Sofa ${item.label} sesudah dibersihkan`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            loading="lazy"
-                          />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </AnimatedSection>
-
-        {/* ──────────────────────────────────────────────────────────
-            7. PROCESS SECTION
-        ────────────────────────────────────────────────────────── */}
-        <AnimatedSection id="proses" className="py-16 md:py-24 bg-muted/40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
-                Proses Pengerjaan Kami
-              </h2>
-              <p className="mt-3 text-muted-foreground text-base sm:text-lg">
-                5 Langkah Profesional Menuju Sofa Bersih &amp; Higienis
-              </p>
-            </div>
-
-            <div className="relative max-w-3xl mx-auto">
-              {/* Vertical line */}
-              <div className="absolute left-5 md:left-1/2 top-0 bottom-0 w-0.5 bg-border md:-translate-x-px" />
-
-              {PROCESS_STEPS.map((step, idx) => (
-                <motion.div
-                  key={step.num}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-50px' }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className={`relative flex items-start gap-4 md:gap-0 mb-10 last:mb-0 ${
-                    idx % 2 === 0
-                      ? 'md:flex-row'
-                      : 'md:flex-row-reverse'
-                  }`}
-                >
-                  {/* Number badge on the line */}
-                  <div className="absolute left-5 md:left-1/2 -translate-x-1/2 z-10 flex items-center justify-center size-10 rounded-full bg-primary text-primary-foreground font-bold text-sm shadow-md">
-                    {step.num}
+                    ))}
                   </div>
+                </div>
+              </div>
 
-                  {/* Content card */}
-                  <div
-                    className={`ml-14 md:ml-0 md:w-[calc(50%-2.5rem)] ${
-                      idx % 2 === 0 ? 'md:pr-0 md:mr-auto' : 'md:pl-0 md:ml-auto'
-                    }`}
-                  >
-                    <Card className="p-4 sm:p-5 border-border/60">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="flex items-center justify-center size-9 rounded-full bg-primary/10 text-primary shrink-0">
-                          <step.icon className="size-5" />
-                        </div>
-                        <h3 className="font-bold text-sm sm:text-base">{step.title}</h3>
-                      </div>
-                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                        {step.desc}
-                      </p>
-                    </Card>
+              <div className="relative">
+                <div className="absolute -left-10 top-10 hidden h-40 w-40 rounded-full bg-primary/10 blur-3xl lg:block" />
+                <div className="overflow-hidden rounded-[2rem] bg-slate-950/5 shadow-[0_40px_80px_rgba(15,23,42,0.08)]">
+                  <div className="relative aspect-[4/3] sm:aspect-[5/4] lg:aspect-[4/3]">
+                    <Image
+                      src="/images/hero-sofa.png"
+                      alt="Sofa bersih oleh MAKLIN Home Cleaning Purwakarta"
+                      fill
+                      className="object-cover"
+                      priority
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 40vw"
+                    />
                   </div>
-                </motion.div>
-              ))}
+                </div>
+              </div>
             </div>
           </div>
-        </AnimatedSection>
+        </section>
 
         {/* ──────────────────────────────────────────────────────────
-            8. PRICING SECTION
+            3. LAYANAN SECTION
         ────────────────────────────────────────────────────────── */}
         <AnimatedSection id="harga" className="py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-950">
                 Layanan Kami
               </h2>
-              <p className="mt-3 text-muted-foreground text-base sm:text-lg">
+              <p className="mt-4 text-base sm:text-lg text-slate-600">
                 Harga terjangkau dengan hasil maksimal. Konsultasi gratis!
               </p>
             </div>
 
-            {/* Desktop grid */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-60px' }}
-              className="hidden md:grid grid-cols-3 lg:grid-cols-5 gap-4"
-            >
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
               {PRICING.map((item) => (
-                <motion.div key={item.name} variants={fadeUp}>
-                  <motion.div
-                    whileHover={{ y: -4 }}
-                    className={`h-full ${
-                      item.popular ? 'md:-mt-2' : ''
-                    }`}
-                  >
-                    <Card
-                      className={`h-full p-5 text-center relative ${
-                        item.popular
-                          ? 'border-2 border-primary shadow-lg shadow-primary/10'
-                          : 'border-border/60'
-                      }`}
-                    >
-                      {item.badge && (
-                        <Badge className="absolute right-2 top-2 bg-amber-500 text-white border-0 text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
-                          <Award className="size-3" />
-                          {item.badge}
-                        </Badge>
-                      )}
-                      <div className="flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary mx-auto mb-3 mt-1">
-                        <Sparkles className="size-6" />
-                      </div>
-                      <h3 className="font-bold text-base mb-1">{item.name}</h3>
-                      <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
-                        {item.desc}
-                      </p>
-
-                      <div className="text-left space-y-3 mb-4">
-                        <div>
-                          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
-                            Yang Anda Dapatkan
-                          </p>
-                          <ul className="space-y-1">
-                            {item.benefits.map((benefit) => (
-                              <li key={benefit} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
-                                <span className="mt-0.5 text-primary">•</span>
-                                <span>{benefit}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        <div>
-                          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
-                            Termasuk
-                          </p>
-                          <ul className="space-y-1">
-                            {item.includes.map((include) => (
-                              <li key={include} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
-                                <CheckCircle className="mt-0.5 size-3.5 shrink-0 text-primary" />
-                                <span>{include}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="mb-4" />
-                      <Button
-                        asChild
-                        variant={item.popular ? 'default' : 'outline'}
-                        className="w-full text-sm font-semibold"
-                        size="sm"
-                      >
-                        <a href={WA_URL} target="_blank" rel="noopener noreferrer">
-                          Konsultasi Gratis
-                        </a>
-                      </Button>
-                    </Card>
-                  </motion.div>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Mobile horizontal scroll */}
-            <div className="md:hidden">
-              <Carousel opts={{ align: 'start' }} className="w-full">
-                <CarouselContent className="-ml-4">
-                  {PRICING.map((item) => (
-                    <CarouselItem key={item.name} className="pl-4 basis-[75%] sm:basis-[60%]">
-                      <Card
-                        className={`h-full p-5 text-center relative ${
-                          item.popular
-                            ? 'border-2 border-primary shadow-lg shadow-primary/10'
-                            : 'border-border/60'
-                        }`}
-                      >
-                        {item.badge && (
-                          <Badge className="absolute right-2 top-2 bg-amber-500 text-white border-0 text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
-                            <Award className="size-3" />
-                            {item.badge}
-                          </Badge>
-                        )}
-                        <div className="flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary mx-auto mb-3 mt-1">
-                          <Sparkles className="size-6" />
-                        </div>
-                        <h3 className="font-bold text-base mb-1">{item.name}</h3>
-                        <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
-                          {item.desc}
-                        </p>
-
-                        <div className="text-left space-y-3 mb-4">
-                          <div>
-                            <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
-                              Yang Anda Dapatkan
-                            </p>
-                            <ul className="space-y-1">
-                              {item.benefits.map((benefit) => (
-                                <li key={benefit} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
-                                  <span className="mt-0.5 text-primary">•</span>
-                                  <span>{benefit}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          <div>
-                            <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
-                              Termasuk
-                            </p>
-                            <ul className="space-y-1">
-                              {item.includes.map((include) => (
-                                <li key={include} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
-                                  <CheckCircle className="mt-0.5 size-3.5 shrink-0 text-primary" />
-                                  <span>{include}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-
-                        <div className="mb-4" />
-                        <Button
-                          asChild
-                          variant={item.popular ? 'default' : 'outline'}
-                          className="w-full text-sm font-semibold"
-                          size="sm"
-                        >
-                          <a href={WA_URL} target="_blank" rel="noopener noreferrer">
-                            Konsultasi Gratis
-                          </a>
-                        </Button>
-                      </Card>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-              </Carousel>
-            </div>
-          </div>
-        </AnimatedSection>
-
-        {/* ──────────────────────────────────────────────────────────
-            9. TESTIMONIALS
-        ────────────────────────────────────────────────────────── */}
-        <AnimatedSection id="testimoni" className="py-16 md:py-24 bg-muted/40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
-                Apa Kata Pelanggan Kami
-              </h2>
-              <p className="mt-3 text-muted-foreground text-base sm:text-lg">
-                Lebih dari ratusan pelanggan puas dengan layanan MAKLIN
-              </p>
-            </div>
-
-            {/* Desktop & Tablet Grid */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-60px' }}
-              className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
-            >
-              {TESTIMONIALS.map((t) => (
-                <motion.div key={t.name + t.loc} variants={fadeUp}>
-                  <Card className="h-full p-5 sm:p-6 border-border/60">
-                    <div className="flex items-center gap-1 mb-3">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <Star
-                          key={i}
-                          className="size-4 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
-                    </div>
-                    <Quote className="size-5 text-primary/20 mb-2 rotate-180" />
-                    <p className="text-sm text-foreground/90 leading-relaxed mb-4 italic">
-                      &ldquo;{t.text}&rdquo;
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-bold">{t.name}</p>
-                        <p className="text-xs text-muted-foreground">{t.loc}</p>
-                      </div>
-                      <Badge variant="secondary" className="text-[10px]">
-                        {t.source}
-                      </Badge>
-                    </div>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Mobile Carousel */}
-            <div className="md:hidden">
-              <Carousel opts={{ align: 'start' }} className="w-full">
-                <CarouselContent className="-ml-4">
-                  {TESTIMONIALS.map((t) => (
-                    <CarouselItem key={t.name + t.loc} className="pl-4 basis-[85%] sm:basis-[70%]">
-                      <Card className="h-full p-5 border-border/60">
-                        <div className="flex items-center gap-1 mb-3">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className="size-4 fill-yellow-400 text-yellow-400"
-                            />
-                          ))}
-                        </div>
-                        <Quote className="size-5 text-primary/20 mb-2 rotate-180" />
-                        <p className="text-sm text-foreground/90 leading-relaxed mb-4 italic">
-                          &ldquo;{t.text}&rdquo;
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-bold">{t.name}</p>
-                            <p className="text-xs text-muted-foreground">{t.loc}</p>
-                          </div>
-                          <Badge variant="secondary" className="text-[10px]">
-                            {t.source}
-                          </Badge>
-                        </div>
-                      </Card>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-              </Carousel>
-            </div>
-          </div>
-        </AnimatedSection>
-
-        {/* ──────────────────────────────────────────────────────────
-            10. FAQ SECTION
-        ────────────────────────────────────────────────────────── */}
-        <AnimatedSection id="faq" className="py-16 md:py-24">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
-                Pertanyaan yang Sering Diajukan
-              </h2>
-            </div>
-
-            <Accordion type="single" collapsible className="space-y-2">
-              {FAQS.map((faq, idx) => (
-                <AccordionItem
-                  key={idx}
-                  value={`faq-${idx}`}
-                  className="border border-border/60 rounded-lg px-4 sm:px-5 bg-card"
+                <Card
+                  key={item.name}
+                  className={`h-full p-6 text-center relative ${
+                    item.popular ? 'border-2 border-primary shadow-lg shadow-primary/10' : 'border-border/60 shadow-sm'
+                  } hover:-translate-y-1 transition-transform`}
                 >
-                  <AccordionTrigger className="text-sm sm:text-base font-semibold hover:no-underline py-4">
-                    {faq.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
-                    {faq.a}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+                  {item.badge && (
+                    <Badge className="absolute right-3 top-3 bg-amber-500 text-white border-0 text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                      <Award className="size-3" />
+                      {item.badge}
+                    </Badge>
+                  )}
+                  <div className="flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary mx-auto mb-3 mt-1">
+                    <Sparkles className="size-6" />
+                  </div>
+                  <h3 className="font-bold text-base mb-2">{item.name}</h3>
+                  <p className="text-xs text-slate-600 mb-4 leading-relaxed">
+                    {item.desc}
+                  </p>
 
-            <p className="mt-8 text-center text-sm text-muted-foreground">
-              Masih punya pertanyaan?{' '}
-              <a
-                href={WA_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary font-semibold hover:underline inline-flex items-center gap-1"
-              >
-                Hubungi kami via WhatsApp <ChevronRight className="size-3.5" />
-              </a>
-            </p>
+                  <div className="text-left space-y-3 mb-5">
+                    <div>
+                      <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
+                        Yang Anda Dapatkan
+                      </p>
+                      <ul className="space-y-1">
+                        {item.benefits.map((benefit) => (
+                          <li key={benefit} className="flex items-start gap-2 text-xs text-slate-600 leading-relaxed">
+                            <span className="mt-0.5 text-primary">•</span>
+                            <span>{benefit}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div>
+                      <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
+                        Termasuk
+                      </p>
+                      <ul className="space-y-1">
+                        {item.includes.map((include) => (
+                          <li key={include} className="flex items-start gap-2 text-xs text-slate-600 leading-relaxed">
+                            <CheckCircle className="mt-0.5 size-3.5 shrink-0 text-primary" />
+                            <span>{include}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <Button
+                    asChild
+                    variant={item.popular ? 'default' : 'outline'}
+                    className="w-full text-sm font-semibold"
+                    size="sm"
+                  >
+                    <a href={WA_URL} target="_blank" rel="noopener noreferrer">
+                      Konsultasi Gratis
+                    </a>
+                  </Button>
+                </Card>
+              ))}
+            </div>
           </div>
         </AnimatedSection>
 
         {/* ──────────────────────────────────────────────────────────
-            11. BOOKING SECTION
+            4. BOOKING SECTION
         ────────────────────────────────────────────────────────── */}
         <AnimatedSection className="py-16 md:py-24 bg-muted/40">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1407,11 +936,11 @@ export default function Home() {
             </div>
 
             {/* Info badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
               {BOOKING_INFO.map((info) => (
                 <div
                   key={info.text}
-                  className="flex items-center gap-2 bg-card border border-border/60 rounded-lg px-3 py-2.5"
+                  className="flex items-center gap-3 bg-card border border-border/60 rounded-2xl px-4 py-3"
                 >
                   <info.icon className="size-4 text-primary shrink-0" />
                   <span className="text-xs sm:text-sm font-medium">{info.text}</span>
@@ -1734,7 +1263,318 @@ export default function Home() {
         </AnimatedSection>
 
         {/* ──────────────────────────────────────────────────────────
-            12. CTA SECTION
+            5. WHY CHOOSE US
+        ────────────────────────────────────────────────────────── */}
+        <AnimatedSection className="py-16 md:py-24 bg-muted/40">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+                Kenapa Memilih MAKLIN?
+              </h2>
+              <p className="mt-3 text-muted-foreground text-base sm:text-lg">
+                Kami berkomitmen memberikan layanan terbaik untuk sofa Anda
+              </p>
+            </div>
+
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-60px' }}
+              className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6"
+            >
+              {WHY_US.map((item) => (
+                <motion.div key={item.title} variants={fadeUp}>
+                  <motion.div
+                    whileHover={{ y: -4, boxShadow: '0 14px 40px rgba(0,0,0,0.08)' }}
+                    className="h-full"
+                  >
+                    <Card className="h-full p-6 sm:p-8 border-border/60 shadow-sm hover:-translate-y-1 transition-transform">
+                      <div className="flex items-center justify-center size-12 sm:size-14 rounded-full bg-primary/10 text-primary mb-3 mx-auto">
+                        <item.icon className="size-6 sm:size-7" />
+                      </div>
+                      <Badge
+                        variant="secondary"
+                        className="mb-2 text-[10px] sm:text-xs bg-primary/10 text-primary font-semibold"
+                      >
+                        {item.tag}
+                      </Badge>
+                      <h3 className="font-bold text-sm sm:text-base mb-1.5 text-center">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground text-center leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </Card>
+                  </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </AnimatedSection>
+
+        {/* ──────────────────────────────────────────────────────────
+            6. PROCESS SECTION
+        ────────────────────────────────────────────────────────── */}
+        <AnimatedSection id="proses" className="py-16 md:py-24 bg-muted/40">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+                Proses Pengerjaan Kami
+              </h2>
+              <p className="mt-3 text-muted-foreground text-base sm:text-lg">
+                5 Langkah Profesional Menuju Sofa Bersih &amp; Higienis
+              </p>
+            </div>
+
+            <div className="relative max-w-3xl mx-auto">
+              {/* Vertical line */}
+              <div className="absolute left-5 md:left-1/2 top-0 bottom-0 w-0.5 bg-border md:-translate-x-px" />
+
+              {PROCESS_STEPS.map((step, idx) => (
+                <motion.div
+                  key={step.num}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  className={`relative flex items-start gap-4 md:gap-0 mb-10 last:mb-0 ${
+                    idx % 2 === 0
+                      ? 'md:flex-row'
+                      : 'md:flex-row-reverse'
+                  }`}
+                >
+                  {/* Number badge on the line */}
+                  <div className="absolute left-5 md:left-1/2 -translate-x-1/2 z-10 flex items-center justify-center size-10 rounded-full bg-primary text-primary-foreground font-bold text-sm shadow-md">
+                    {step.num}
+                  </div>
+
+                  {/* Content card */}
+                  <div
+                    className={`ml-14 md:ml-0 md:w-[calc(50%-2.5rem)] ${
+                      idx % 2 === 0 ? 'md:pr-0 md:mr-auto' : 'md:pl-0 md:ml-auto'
+                    }`}
+                  >
+                    <Card className="p-6 sm:p-8 border-border/60 shadow-sm hover:-translate-y-1 transition-transform">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="flex items-center justify-center size-9 rounded-full bg-primary/10 text-primary shrink-0">
+                          <step.icon className="size-5" />
+                        </div>
+                        <h3 className="font-bold text-sm sm:text-base">{step.title}</h3>
+                      </div>
+                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                        {step.desc}
+                      </p>
+                    </Card>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* ──────────────────────────────────────────────────────────
+            7. BEFORE / AFTER GALLERY
+        ────────────────────────────────────────────────────────── */}
+        <AnimatedSection className="py-16 md:py-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+                Bukti Hasil Kerja Kami
+              </h2>
+              <p className="mt-3 text-muted-foreground text-base sm:text-lg">
+                Lihat sendiri perbedaan sofa sebelum dan sesudah dibersihkan
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:gap-8">
+              {BEFORE_AFTER.map((item) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Card className="overflow-hidden border-border/60 shadow-sm hover:-translate-y-1 transition-transform">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-base sm:text-lg font-bold">
+                        {item.label}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Before */}
+                      <div className="relative">
+                        <span className="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-md">
+                          SEBELUM
+                        </span>
+                        <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+                          <Image
+                            src={item.before}
+                            alt={`Sofa ${item.label} sebelum dibersihkan`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            loading="lazy"
+                          />
+                        </div>
+                      </div>
+                      {/* After */}
+                      <div className="relative">
+                        <span className="absolute top-3 left-3 z-10 bg-primary text-primary-foreground text-xs font-bold px-2.5 py-1 rounded-md">
+                          SESUDAH
+                        </span>
+                        <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+                          <Image
+                            src={item.after}
+                            alt={`Sofa ${item.label} sesudah dibersihkan`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            loading="lazy"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* ──────────────────────────────────────────────────────────
+            8. TESTIMONI
+        ────────────────────────────────────────────────────────── */}
+        <AnimatedSection id="testimoni" className="py-16 md:py-24 bg-muted/40">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+                Apa Kata Pelanggan Kami
+              </h2>
+              <p className="mt-3 text-muted-foreground text-base sm:text-lg">
+                Lebih dari ratusan pelanggan puas dengan layanan MAKLIN
+              </p>
+            </div>
+
+            {/* Desktop & Tablet Grid */}
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-60px' }}
+              className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+            >
+              {TESTIMONIALS.map((t) => (
+                <motion.div key={t.name + t.loc} variants={fadeUp}>
+                  <Card className="h-full p-5 sm:p-6 border-border/60">
+                    <div className="flex items-center gap-1 mb-3">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className="size-4 fill-yellow-400 text-yellow-400"
+                        />
+                      ))}
+                    </div>
+                    <Quote className="size-5 text-primary/20 mb-2 rotate-180" />
+                    <p className="text-sm text-foreground/90 leading-relaxed mb-4 italic">
+                      &ldquo;{t.text}&rdquo;
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-bold">{t.name}</p>
+                        <p className="text-xs text-muted-foreground">{t.loc}</p>
+                      </div>
+                      <Badge variant="secondary" className="text-[10px]">
+                        {t.source}
+                      </Badge>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Mobile Carousel */}
+            <div className="md:hidden">
+              <Carousel opts={{ align: 'start' }} className="w-full">
+                <CarouselContent className="-ml-4">
+                  {TESTIMONIALS.map((t) => (
+                    <CarouselItem key={t.name + t.loc} className="pl-4 basis-[85%] sm:basis-[70%]">
+                      <Card className="h-full p-5 border-border/60">
+                        <div className="flex items-center gap-1 mb-3">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className="size-4 fill-yellow-400 text-yellow-400"
+                            />
+                          ))}
+                        </div>
+                        <Quote className="size-5 text-primary/20 mb-2 rotate-180" />
+                        <p className="text-sm text-foreground/90 leading-relaxed mb-4 italic">
+                          &ldquo;{t.text}&rdquo;
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-bold">{t.name}</p>
+                            <p className="text-xs text-muted-foreground">{t.loc}</p>
+                          </div>
+                          <Badge variant="secondary" className="text-[10px]">
+                            {t.source}
+                          </Badge>
+                        </div>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* ──────────────────────────────────────────────────────────
+            9. FAQ SECTION
+        ────────────────────────────────────────────────────────── */}
+        <AnimatedSection id="faq" className="py-16 md:py-24">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+                Pertanyaan yang Sering Diajukan
+              </h2>
+            </div>
+
+            <Accordion type="single" collapsible className="space-y-3">
+              {FAQS.map((faq, idx) => (
+                <AccordionItem
+                  key={idx}
+                  value={`faq-${idx}`}
+                  className="border border-border/60 rounded-[1.5rem] px-5 sm:px-6 bg-card shadow-sm"
+                >
+                  <AccordionTrigger className="text-sm sm:text-base font-semibold hover:no-underline py-4">
+                    {faq.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
+                    {faq.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+
+            <p className="mt-8 text-center text-sm text-muted-foreground">
+              Masih punya pertanyaan?{' '}
+              <a
+                href={WA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary font-semibold hover:underline inline-flex items-center gap-1"
+              >
+                Hubungi kami via WhatsApp <ChevronRight className="size-3.5" />
+              </a>
+            </p>
+          </div>
+        </AnimatedSection>
+
+        {/* ──────────────────────────────────────────────────────────
+            10. CTA SECTION
         ────────────────────────────────────────────────────────── */}
         <section className="bg-primary py-16 md:py-20">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-primary-foreground">
