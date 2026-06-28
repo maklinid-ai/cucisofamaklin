@@ -1,0 +1,21 @@
+{
+  "name": "MAKLIN Home Cleaning",
+  "short_name": "MAKLIN",
+  "description": "Jasa Cuci Sofa, Kasur, Karpet, Kursi, dan Jok Mobil di Purwakarta. Layanan home cleaning dengan chemical aman dan teknisi profesional.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#29986A",
+  "icons": [
+    {
+      "src": "/logo-web-page.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo-web-page.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

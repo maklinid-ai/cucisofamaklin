@@ -60,8 +60,11 @@ import {
   ArrowUpFromLine,
   CheckCircle,
   Star,
+  User,
+  Link2,
   MapPin,
   Phone,
+  MessageCircle,
   Instagram,
   Menu,
   Loader2,
@@ -83,11 +86,64 @@ const WA_URL = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)
 const CURRENT_YEAR = new Date().getFullYear()
 
 const NAV_LINKS = [
-  { label: 'Layanan', href: '#layanan' },
-  { label: 'Proses', href: '#proses' },
+  { label: 'Beranda', href: '#hero' },
   { label: 'Layanan', href: '#harga' },
+  { label: 'Cara Kerja', href: '#proses' },
+  { label: 'Portfolio', href: '#portfolio' },
   { label: 'Testimoni', href: '#testimoni' },
   { label: 'FAQ', href: '#faq' },
+  { label: 'Booking', href: '#booking' },
+]
+
+const TRUST_BULLETS = [
+  {
+    icon: ShieldCheck,
+    title: 'Chemical Aman',
+    subtitle: 'Bahan pembersih yang aman untuk keluarga dan hewan peliharaan.',
+  },
+  {
+    icon: Award,
+    title: 'Garansi Pengerjaan',
+    subtitle: 'Memberikan jaminan kualitas hingga 3 hari setelah layanan.',
+  },
+  {
+    icon: HomeIcon,
+    title: 'Teknisi Berpengalaman',
+    subtitle: 'Tim profesional yang terlatih untuk semua jenis sofa & kasur.',
+  },
+  {
+    icon: Zap,
+    title: 'Respon Cepat',
+    subtitle: 'Konfirmasi booking cepat melalui WhatsApp.',
+  },
+  {
+    icon: CalendarIcon,
+    title: 'Booking Mudah',
+    subtitle: 'Form mudah diisi dan proses langsung dipantau admin.',
+  },
+]
+
+const HERO_STATS = [
+  {
+    icon: Star,
+    value: '500+',
+    label: 'Pelanggan Puas',
+  },
+  {
+    icon: Award,
+    value: '5',
+    label: 'Jenis Layanan',
+  },
+  {
+    icon: HomeIcon,
+    value: '100%',
+    label: 'Home Service',
+  },
+  {
+    icon: Star,
+    value: '4.9★',
+    label: 'Rating Pelanggan',
+  },
 ]
 
 const SERVICE_AREAS = [
@@ -140,40 +196,52 @@ const PROBLEMS = [
 
 const WHY_US = [
   {
-    icon: Sparkles,
-    title: 'Angkat Debu, Tungau & Kuman',
-    desc: 'Membersihkan sofa hingga ke akar kain, mengangkat debu, tungau, dan kuman secara tuntas.',
-    tag: 'Ampuh',
+    icon: ShieldCheck,
+    title: 'Teknisi Profesional',
+    desc: 'Tim terbaik dengan pengalaman membersihkan semua jenis sofa, kasur, karpet, dan jok mobil.',
+    tag: 'Profesional',
   },
   {
-    icon: Eraser,
-    title: 'Hilangkan Noda',
-    desc: 'Menghilangkan berbagai jenis noda membandel dengan teknik deep cleaning profesional.',
-    tag: 'Deep Clean',
-  },
-  {
-    icon: Flower2,
-    title: 'Wangi Segar Tahan Lama',
-    desc: 'Sofa kembali wangi segar dengan pengharum berkualitas yang tahan lama.',
-    tag: 'Fresh',
+    icon: Search,
+    title: 'Mesin Professional Extraction',
+    desc: 'Mesin kami bekerja hingga lapisan terdalam untuk hasil bersih dan cepat kering.',
+    tag: 'Extraction',
   },
   {
     icon: ShieldCheck,
-    title: 'Aman untuk Anak-anak',
-    desc: 'Chemical yang kami gunakan aman dan ramah lingkungan, tidak berbahaya untuk keluarga.',
-    tag: 'Safe',
-  },
-  {
-    icon: Clock,
-    title: 'Praktis & Cepat',
-    desc: 'Home service langsung ke lokasi Anda. Pengerjaan cepat, sofa cepat kering dan siap pakai.',
-    tag: 'Fast',
+    title: 'Chemical Aman',
+    desc: 'Formula ramah keluarga dan hewan peliharaan, tanpa bahan berbahaya.',
+    tag: 'Aman',
   },
   {
     icon: Award,
-    title: 'Teknisi Profesional',
-    desc: 'Tim teknisi berpengalaman dan terlatih yang mengutamakan kepuasan pelanggan.',
-    tag: 'Expert',
+    title: 'Garansi Pengerjaan',
+    desc: 'Garansi H+3 untuk memastikan hasil pembersihan maksimal.',
+    tag: 'Garansi',
+  },
+  {
+    icon: Truck,
+    title: 'Datang ke Lokasi',
+    desc: 'Layanan home service langsung ke rumah Anda di Purwakarta dan sekitarnya.',
+    tag: 'Mobile',
+  },
+  {
+    icon: Award,
+    title: 'Harga Transparan',
+    desc: 'Biaya jelas tanpa kejutan, hanya bayar sesuai layanan yang dipilih.',
+    tag: 'Transparan',
+  },
+  {
+    icon: Shield,
+    title: 'Tanpa Biaya Tersembunyi',
+    desc: 'Tidak ada biaya tambahan mendadak. Semua layanan terlihat sejak awal.',
+    tag: 'Jelas',
+  },
+  {
+    icon: Zap,
+    title: 'Response Admin Cepat',
+    desc: 'Admin siap merespon booking dan konsultasi dalam waktu singkat.',
+    tag: 'Cepat',
   },
 ]
 
@@ -234,6 +302,8 @@ const PRICING = [
     desc: 'Jasa cuci sofa Purwakarta untuk sofa fabric, kulit, dan velvet yang kembali bersih, wangi, dan nyaman.',
     popular: true,
     badge: 'Best Seller',
+    duration: '1-2 Jam',
+    dryTime: '2-4 Jam',
     benefits: ['Sofa lebih bersih & higienis', 'Bebas debu, tungau & bau', 'Aman untuk berbagai bahan sofa'],
     includes: ['Vacuum debu', 'Pre-Treatment noda', 'Deep Cleaning', 'Extraction', 'Parfum khusus'],
   },
@@ -241,6 +311,8 @@ const PRICING = [
     name: 'Cuci Kasur',
     desc: 'Jasa cuci kasur Purwakarta untuk kasur lebih higienis, segar, dan nyaman untuk kualitas tidur yang lebih baik.',
     popular: false,
+    duration: '1-2 Jam',
+    dryTime: '2-5 Jam',
     benefits: ['Kasur lebih higienis', 'Mengurangi tungau & bakteri', 'Tidur lebih nyaman'],
     includes: ['Vacuum', 'Wet Cleaning', 'Penghilangan noda', 'Extraction', 'Parfum khusus'],
   },
@@ -248,6 +320,8 @@ const PRICING = [
     name: 'Cuci Karpet',
     desc: 'Jasa cuci karpet Purwakarta untuk karpet bersih, harum, dan bebas debu di rumah yang lebih sehat.',
     popular: false,
+    duration: '1-2 Jam',
+    dryTime: '3-6 Jam',
     benefits: ['Karpet lebih bersih', 'Bebas debu & bau', 'Warna tampak lebih segar'],
     includes: ['Vacuum', 'Deep Cleaning', 'Penghilangan noda', 'Extraction', 'Parfum khusus'],
   },
@@ -255,6 +329,8 @@ const PRICING = [
     name: 'Cuci Kursi',
     desc: 'Jasa cuci kursi Purwakarta untuk kursi rumah maupun kantor yang kembali bersih, higienis, dan nyaman.',
     popular: false,
+    duration: '45-90 Menit',
+    dryTime: '2-4 Jam',
     benefits: ['Bersih & harum', 'Mengurangi debu & noda', 'Cocok untuk rumah maupun kantor'],
     includes: ['Vacuum', 'Deep Cleaning', 'Penghilangan noda', 'Extraction', 'Parfum khusus'],
   },
@@ -262,6 +338,8 @@ const PRICING = [
     name: 'Cuci Jok Mobil',
     desc: 'Jasa cuci jok mobil Purwakarta untuk interior mobil lebih bersih, segar, dan nyaman untuk setiap perjalanan.',
     popular: false,
+    duration: '1-1.5 Jam',
+    dryTime: '2-3 Jam',
     benefits: ['Jok lebih higienis', 'Mengurangi debu & bau', 'Kabina lebih segar'],
     includes: ['Vacuum Interior', 'Deep Cleaning', 'Penghilangan noda', 'Extraction', 'Parfum khusus'],
   },
@@ -496,6 +574,9 @@ function Counter({ target, suffix = '' }: { target: number; suffix?: string }) {
 export default function Home() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('hero')
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const [showDesktopStickyBooking, setShowDesktopStickyBooking] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [hasReadTerms, setHasReadTerms] = useState(false)
   const [bookingSubmitted, setBookingSubmitted] = useState(false)
@@ -503,10 +584,32 @@ export default function Home() {
   const [scheduleTime, setScheduleTime] = useState('')
   const [schedulePopoverOpen, setSchedulePopoverOpen] = useState(false)
 
-  // ── Scroll listener for navbar ──
+  // ── Scroll listener for navbar and progress ──
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const sectionIds = ['hero', 'harga', 'proses', 'portfolio', 'testimoni', 'faq', 'booking']
+
+    const onScroll = () => {
+        const y = window.scrollY
+        setScrolled(y > 20)
+        setShowDesktopStickyBooking(y > 520)
+
+        const progress = Math.min(
+          100,
+          Math.max(0, (y / (document.body.scrollHeight - window.innerHeight)) * 100)
+        )
+        setScrollProgress(progress)
+
+        const currentSection = sectionIds.reduce((active, id) => {
+          const section = document.getElementById(id)
+          if (!section) return active
+          const top = section.getBoundingClientRect().top
+          return top <= 120 ? id : active
+        }, 'hero')
+        setActiveSection(currentSection)
+      }
+
     window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
@@ -645,20 +748,22 @@ export default function Home() {
       {/* ────────────────────────────────────────────────────────────
           1. NAVIGATION
       ──────────────────────────────────────────────────────────── */}
+      <div className="fixed inset-x-0 top-0 z-50 h-1 bg-primary/20">
+        <div
+          className="h-full bg-primary transition-[width] duration-200"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
             ? 'bg-background shadow-sm border-b border-border/60 backdrop-blur-xl'
-            : 'bg-background/95 border-b border-border/10'
+            : 'bg-background/95 border-b border-border/10 backdrop-blur-sm'
         }`}
       >
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center"
-            aria-label="MAKLIN Home Cleaning"
-          >
+        <nav className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Link href="/" className="flex items-center" aria-label="MAKLIN Home Cleaning">
             <Image
               src="/logo-maklin-2_New.png"
               alt="MAKLIN Home Cleaning"
@@ -669,29 +774,30 @@ export default function Home() {
             />
           </Link>
 
-          {/* Desktop nav links */}
           <div className="hidden md:flex items-center gap-6">
             {NAV_LINKS.map((l) => (
               <button
                 key={l.href}
                 onClick={() => scrollTo(l.href)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                className={`text-sm font-medium transition-colors cursor-pointer ${
+                  activeSection === l.href.slice(1)
+                    ? 'text-brand'
+                    : 'text-muted-foreground hover:text-brand'
+                }`}
               >
                 {l.label}
               </button>
             ))}
           </div>
 
-          {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Button asChild size="sm" className="font-semibold">
+            <Button asChild size="sm" className="rounded-full font-semibold">
               <a href={WA_URL} target="_blank" rel="noopener noreferrer">
-                Hubungi WhatsApp
+                Booking Sekarang
               </a>
             </Button>
           </div>
 
-          {/* Mobile hamburger */}
           <div className="md:hidden">
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
@@ -703,7 +809,7 @@ export default function Home() {
                 <SheetHeader>
                   <SheetTitle className="text-left">
                     <Image
-                      src="/logo-maklin-1_New.png"
+                      src="/logo-maklin-2_New.png"
                       alt="MAKLIN Home Cleaning"
                       width={160}
                       height={48}
@@ -724,7 +830,7 @@ export default function Home() {
                   <Separator className="my-2" />
                   <Button asChild className="mt-2 w-full font-semibold">
                     <a href={WA_URL} target="_blank" rel="noopener noreferrer">
-                      Hubungi WhatsApp
+                      Booking Sekarang
                     </a>
                   </Button>
                 </div>
@@ -742,98 +848,162 @@ export default function Home() {
         {/* ──────────────────────────────────────────────────────────
             2. HERO SECTION
         ────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden py-16 md:py-24" aria-label="Hero">
-          <div className="absolute inset-x-0 top-0 h-40 bg-primary/5" />
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="hero" className="relative overflow-hidden bg-gradient-to-br from-brand/20 via-brand/10 to-background py-24 md:py-28 text-foreground" aria-label="Hero">
+          <div className="absolute inset-x-0 top-0 h-40 bg-brand/15" />
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(30rem,38%)]">
               <div className="max-w-2xl">
-                <motion.h1
+                <motion.div
                   initial={{ opacity: 0, y: 25 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.2 }}
-                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight text-slate-950"
                 >
-                  Jasa Cuci Sofa Purwakarta
-                </motion.h1>
-                <motion.p
+                  <span className="text-sm font-medium uppercase tracking-[0.28em] text-brand/95">
+                    Home Cleaning Premium
+                  </span>
+                  <h1 className="mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight text-foreground">
+                    Bersihkan Sofa, Kasur, Karpet, dan Jok Mobil Anda
+                  </h1>
+                </motion.div>
+
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.4 }}
-                  className="mt-6 text-base sm:text-lg md:text-xl font-medium text-slate-600 max-w-xl"
+                  transition={{ duration: 0.7, delay: 0.35 }}
+                  className="mt-6 max-w-xl"
                 >
-                  Bersih maksimal, higienis, dan harum tanpa repot. Home service sofa siap di rumah Anda.
-                </motion.p>
+                  <p className="text-lg font-semibold text-foreground">
+                    Cuci Sofa, Kasur, Karpet,
+                    <br /> Kursi &amp; Jok Mobil Profesional
+                  </p>
+
+                  <p className="mt-4 text-sm text-foreground/75">
+                    Melayani Purwakarta dan sekitarnya dengan layanan cuci sofa dan home cleaning premium.
+                  </p>
+
+                  <p className="mt-3 text-sm font-medium text-brand">
+                    Teknisi berpengalaman · chemical aman · bergaransi sampai H+3
+                  </p>
+                </motion.div>
 
                 <motion.div
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.6 }}
-                  className="mt-10 flex flex-col sm:flex-row items-stretch gap-4"
+                  className="mt-8 flex flex-col sm:flex-row items-stretch gap-4"
                 >
-                  <Button asChild size="lg" className="w-full sm:w-auto text-base font-bold px-8">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="w-full sm:w-auto rounded-full bg-brand text-brand-foreground px-12 py-4 text-base font-extrabold shadow-xl shadow-brand/20"
+                  >
                     <a href={WA_URL} target="_blank" rel="noopener noreferrer">
-                      Hubungi via WhatsApp
+                      Booking Sekarang
                     </a>
                   </Button>
                   <Button
                     asChild
                     variant="outline"
                     size="lg"
-                    className="w-full sm:w-auto text-base font-semibold px-8"
+                    className="w-full sm:w-auto rounded-full border-brand text-brand px-10 py-4 text-base font-semibold"
                   >
                     <button onClick={() => scrollTo('#harga')}>Lihat Layanan</button>
                   </Button>
                 </motion.div>
 
-                <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-2">
-                  {[
-                    'Garansi Pengerjaan',
-                    'Teknisi Berpengalaman',
-                    'Chemical Aman',
-                    'Home Service',
-                  ].map((badge) => (
-                    <div
-                      key={badge}
-                      className="inline-flex items-center gap-2 rounded-2xl border border-border/80 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm"
-                    >
-                      <CheckCircle className="size-4 text-primary" />
-                      {badge}
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-10 rounded-[1.5rem] border border-border/60 bg-card px-5 py-5 shadow-sm sm:px-6 sm:py-6">
-                  <p className="text-sm font-medium text-primary text-center">
-                    <MapPin className="inline size-4 mr-1 -mt-0.5" />
-                    Melayani Purwakarta dan Sekitarnya
-                  </p>
-                  <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-                    {SERVICE_AREAS.map((area) => (
-                      <Badge
-                        key={area}
-                        variant="secondary"
-                        className="bg-primary/10 text-primary text-[11px] font-semibold"
-                      >
-                        {area}
-                      </Badge>
-                    ))}
-                  </div>
+                <div className="mt-8">
+                  <ul className="space-y-2 text-sm text-brand/90 font-medium">
+                    <li>✓ 1000+ Sofa Dibersihkan</li>
+                    <li>✓ Rating 4.9</li>
+                    <li>✓ Bergaransi</li>
+                  </ul>
                 </div>
               </div>
 
               <div className="relative">
                 <div className="absolute -left-10 top-10 hidden h-40 w-40 rounded-full bg-primary/10 blur-3xl lg:block" />
-                <div className="overflow-hidden rounded-[2rem] bg-slate-950/5 shadow-[0_40px_80px_rgba(15,23,42,0.08)]">
+                <div className="overflow-hidden rounded-[20px] bg-brand/5 border border-brand/20 shadow-lg relative">
                   <div className="relative aspect-[4/3] sm:aspect-[5/4] lg:aspect-[4/3]">
                     <Image
-                      src="/images/hero-sofa.png"
-                      alt="Sofa bersih oleh MAKLIN Home Cleaning Purwakarta"
+                      src="/images/maklin-sofa.jpeg"
+                      alt="Teknisi MAKLIN sedang bekerja"
                       fill
                       className="object-cover"
                       priority
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 40vw"
                     />
                   </div>
+
+                  {/* Floating stats card */}
+                  <div className="absolute left-6 bottom-6 w-64 bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg p-4 border border-border/60">
+                    <div className="flex items-center justify-between mb-2">
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">1000+ Sofa Dibersihkan</p>
+                        <p className="text-xs text-muted-foreground">Pengalaman teruji</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-bold text-primary">4.9</p>
+                        <p className="text-xs text-muted-foreground">Rating</p>
+                      </div>
+                    </div>
+                    <div className="border-t border-border/60 pt-3">
+                      <div className="text-sm text-foreground font-medium">Bergaransi</div>
+                    </div>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-brand/10 py-8 md:py-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
+              {HERO_STATS.map((stat) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-80px' }}
+                  transition={{ duration: 0.5 }}
+                  className="rounded-3xl border border-border/70 bg-white p-5 shadow-sm"
+                >
+                  <div className="flex items-center gap-3 text-primary mb-3">
+                    <div className="grid h-11 w-11 place-items-center rounded-2xl bg-primary/10 text-primary">
+                      <stat.icon className="size-5" />
+                    </div>
+                    <p className="text-sm uppercase tracking-[0.24em] font-semibold text-muted-foreground">
+                      {stat.label}
+                    </p>
+                  </div>
+                  <p className="text-3xl font-extrabold text-foreground">{stat.value}</p>
+                  <p className="mt-2 text-sm text-muted-foreground">{stat.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-background/80 py-8 md:py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="overflow-hidden rounded-[24px] border border-border/60 bg-white shadow-[0_30px_80px_rgba(15,23,42,0.08)]">
+              <div className="flex min-h-[7rem] items-center gap-4 overflow-x-auto px-4 py-6 sm:px-6 sm:py-8">
+                {TRUST_BULLETS.map((item) => (
+                  <div
+                    key={item.title}
+                    className="min-w-[16rem] rounded-3xl bg-background/90 p-4 shadow-sm sm:p-5"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="grid h-11 w-11 place-items-center rounded-2xl bg-primary/10 text-primary">
+                        <item.icon className="size-5" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">{item.title}</p>
+                        <p className="text-xs text-muted-foreground leading-5">{item.subtitle}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -845,77 +1015,109 @@ export default function Home() {
         <AnimatedSection id="harga" className="py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-950">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
                 Layanan Kami
               </h2>
-              <p className="mt-4 text-base sm:text-lg text-slate-600">
+              <p className="mt-4 text-base sm:text-lg text-muted-foreground">
                 Harga terjangkau dengan hasil maksimal. Konsultasi gratis!
               </p>
             </div>
 
-            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {PRICING.map((item) => (
-                <Card
+                <motion.div
                   key={item.name}
-                  className={`h-full p-6 text-center relative ${
-                    item.popular ? 'border-2 border-primary shadow-lg shadow-primary/10' : 'border-border/60 shadow-sm'
-                  } hover:-translate-y-1 transition-transform`}
+                  whileHover={{ y: -4, scale: 1.01 }}
+                  className="h-full"
                 >
-                  {item.badge && (
-                    <Badge className="absolute right-3 top-3 bg-amber-500 text-white border-0 text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
-                      <Award className="size-3" />
-                      {item.badge}
-                    </Badge>
-                  )}
-                  <div className="flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary mx-auto mb-3 mt-1">
-                    <Sparkles className="size-6" />
-                  </div>
-                  <h3 className="font-bold text-base mb-2">{item.name}</h3>
-                  <p className="text-xs text-slate-600 mb-4 leading-relaxed">
-                    {item.desc}
-                  </p>
-
-                  <div className="text-left space-y-3 mb-5">
-                    <div>
-                      <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
-                        Yang Anda Dapatkan
-                      </p>
-                      <ul className="space-y-1">
-                        {item.benefits.map((benefit) => (
-                          <li key={benefit} className="flex items-start gap-2 text-xs text-slate-600 leading-relaxed">
-                            <span className="mt-0.5 text-primary">•</span>
-                            <span>{benefit}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div>
-                      <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
-                        Termasuk
-                      </p>
-                      <ul className="space-y-1">
-                        {item.includes.map((include) => (
-                          <li key={include} className="flex items-start gap-2 text-xs text-slate-600 leading-relaxed">
-                            <CheckCircle className="mt-0.5 size-3.5 shrink-0 text-primary" />
-                            <span>{include}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  <Button
-                    asChild
-                    variant={item.popular ? 'default' : 'outline'}
-                    className="w-full text-sm font-semibold"
-                    size="sm"
+                  <Card
+                    className={`h-full p-6 text-center relative ${
+                      item.popular ? 'border-2 border-primary shadow-sm' : 'border-border/60 shadow-sm'
+                    } rounded-[20px] transition-shadow duration-300`}
                   >
-                    <a href={WA_URL} target="_blank" rel="noopener noreferrer">
-                      Konsultasi Gratis
-                    </a>
-                  </Button>
-                </Card>
+                    <div className="relative mb-5 h-44 overflow-hidden rounded-[20px] bg-gradient-to-br from-primary/10 via-transparent to-primary/5">
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(22,163,74,0.18),transparent_45%)]" />
+                      <div className="relative flex h-full items-end justify-end p-5">
+                        <Sparkles className="size-14 text-primary/70" />
+                      </div>
+                    </div>
+                    {item.badge && (
+                      <Badge className="absolute right-3 top-3 bg-primary/10 text-primary border-0 text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                        <Award className="size-3" />
+                        {item.badge}
+                      </Badge>
+                    )}
+                    <div className="flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary mx-auto mb-3 mt-1">
+                      <Sparkles className="size-6" />
+                    </div>
+                    <h3 className="font-bold text-base mb-2">{item.name}</h3>
+                    <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                      {item.desc}
+                    </p>
+
+                    <div className="mb-4 grid grid-cols-2 gap-3 text-left text-[11px] uppercase tracking-[0.24em]">
+                      <div className="rounded-2xl bg-primary/10 p-3">
+                        <p className="text-[10px] text-muted-foreground">Durasi</p>
+                        <p className="mt-1 font-semibold text-foreground">{item.duration}</p>
+                      </div>
+                      <div className="rounded-2xl bg-primary/10 p-3">
+                        <p className="text-[10px] text-muted-foreground">Waktu Kering</p>
+                        <p className="mt-1 font-semibold text-foreground">{item.dryTime}</p>
+                      </div>
+                    </div>
+
+                    <div className="text-left space-y-3 mb-5">
+                      <div>
+                        <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
+                          Yang Anda Dapatkan
+                        </p>
+                        <ul className="space-y-1">
+                          {item.benefits.map((benefit) => (
+                            <li key={benefit} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
+                              <span className="mt-0.5 text-primary">•</span>
+                              <span>{benefit}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div>
+                        <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
+                          Termasuk
+                        </p>
+                        <ul className="space-y-1">
+                          {item.includes.map((include) => (
+                            <li key={include} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
+                              <CheckCircle className="mt-0.5 size-3.5 shrink-0 text-primary" />
+                              <span>{include}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <Button
+                        asChild
+                        variant="default"
+                        className="w-full text-sm font-semibold transition duration-300 hover:shadow-lg"
+                        size="sm"
+                      >
+                        <a href={WA_URL} target="_blank" rel="noopener noreferrer">
+                          Booking
+                        </a>
+                      </Button>
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="w-full text-sm font-semibold transition duration-300 hover:shadow-lg"
+                        size="sm"
+                      >
+                        <a href="#booking">Detail</a>
+                      </Button>
+                    </div>
+                  </Card>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -924,38 +1126,73 @@ export default function Home() {
         {/* ──────────────────────────────────────────────────────────
             4. BOOKING SECTION
         ────────────────────────────────────────────────────────── */}
-        <AnimatedSection className="py-16 md:py-24 bg-muted/40">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
-                Booking Jasa Home Cleaning MAKLIN
-              </h2>
-              <p className="mt-3 text-muted-foreground text-base sm:text-lg">
-                Isi formulir berikut. Tim MAKLIN akan segera menghubungi Anda melalui WhatsApp.
-              </p>
-            </div>
-
-            {/* Info badges */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
-              {BOOKING_INFO.map((info) => (
-                <div
-                  key={info.text}
-                  className="flex items-center gap-3 bg-card border border-border/60 rounded-2xl px-4 py-3"
-                >
-                  <info.icon className="size-4 text-primary shrink-0" />
-                  <span className="text-xs sm:text-sm font-medium">{info.text}</span>
+        <AnimatedSection id="booking" className="py-20 md:py-28">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Card className="p-6 md:p-8 border-border bg-white shadow-sm rounded-[28px]">
+              <div className="mb-8 space-y-6">
+                <div>
+                  <p className="text-sm font-semibold text-primary uppercase tracking-[0.32em]">
+                    Booking Home Cleaning
+                  </p>
+                  <h3 className="mt-4 text-3xl font-extrabold text-foreground">
+                    Isi Formulir dan Tim Kami Akan Segera Menghubungi
+                  </h3>
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                    Semua input form dirancang untuk memudahkan proses booking Anda tanpa repot.
+                  </p>
                 </div>
-              ))}
-            </div>
 
-            {/* Form */}
-            <Card className="p-5 sm:p-6 md:p-8 border-border/60">
+                <div className="rounded-[24px] border border-border/70 bg-primary/5 p-5">
+                  <p className="text-sm font-semibold text-primary uppercase tracking-[0.24em]">
+                    Progress Booking
+                  </p>
+                  <div className="mt-4 space-y-3">
+                    {[
+                      { icon: User, label: 'Isi Data', desc: 'Masukkan informasi & layanan yang Anda butuhkan' },
+                      { icon: MessageCircle, label: 'Admin Konfirmasi', desc: 'Admin MAKLIN akan menghubungi Anda melalui WhatsApp' },
+                      { icon: Truck, label: 'Teknisi Datang', desc: 'Tim kami tiba di lokasi sesuai jadwal' },
+                      { icon: CheckCircle, label: 'Selesai', desc: 'Sofa Anda kembali bersih dan nyaman' },
+                    ].map((step) => (
+                      <div key={step.label} className="flex items-start gap-3 rounded-3xl bg-white p-4 shadow-sm">
+                        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-primary/10 text-primary">
+                          <step.icon className="size-4" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-foreground">{step.label}</p>
+                          <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-[24px] border border-border/60 bg-white p-5 shadow-sm">
+                  <p className="text-sm font-semibold text-foreground">Yang Anda Dapatkan</p>
+                  <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+                    {[
+                      'Survey Gratis',
+                      'Booking Mudah',
+                      'Konfirmasi Admin',
+                      'Teknisi Datang Sesuai Jadwal',
+                      'Pembayaran Aman',
+                      'Garansi Pengerjaan',
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-2">
+                        <CheckCircle className="mt-1 size-4 text-primary" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                {/* Nama */}
                 <div className="grid gap-2">
-                  <Label htmlFor="name" className="text-sm font-semibold">
-                    Nama Pelanggan <span className="text-destructive">*</span>
-                  </Label>
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <User className="size-4 text-primary" />
+                    <Label htmlFor="name">Nama Pelanggan</Label>
+                    <span className="text-destructive">*</span>
+                  </div>
                   <Input
                     id="name"
                     placeholder="Masukkan nama lengkap Anda"
@@ -967,11 +1204,12 @@ export default function Home() {
                   )}
                 </div>
 
-                {/* WhatsApp */}
                 <div className="grid gap-2">
-                  <Label htmlFor="whatsapp" className="text-sm font-semibold">
-                    WhatsApp <span className="text-destructive">*</span>
-                  </Label>
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <Phone className="size-4 text-primary" />
+                    <Label htmlFor="whatsapp">WhatsApp</Label>
+                    <span className="text-destructive">*</span>
+                  </div>
                   <Input
                     id="whatsapp"
                     type="tel"
@@ -984,83 +1222,83 @@ export default function Home() {
                   )}
                 </div>
 
-                {/* Jadwal */}
                 <div className="grid gap-2">
-                  <Label htmlFor="schedule" className="text-sm font-semibold">
-                    Jadwal Booking <span className="text-destructive">*</span>
-                  </Label>
-                  <div className="grid gap-2">
-                    <Controller
-                      name="schedule"
-                      control={control}
-                      render={() => (
-                        <Popover open={schedulePopoverOpen} onOpenChange={setSchedulePopoverOpen}>
-                          <PopoverTrigger asChild>
-                            <Button
-                              id="schedule"
-                              type="button"
-                              variant="outline"
-                              className="w-full justify-between text-left font-normal"
-                            >
-                              <span className={scheduleValue ? 'text-foreground' : 'text-muted-foreground'}>
-                                {scheduleValue || 'Pilih tanggal & waktu'}
-                              </span>
-                              <CalendarIcon className="ml-2 size-4 opacity-50" />
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <div className="p-3">
-                              <Calendar
-                                mode="single"
-                                selected={scheduleDate}
-                                onSelect={handleScheduleDateSelect}
-                                disabled={(date) => {
-                                  const today = new Date()
-                                  today.setHours(0, 0, 0, 0)
-                                  return date < today
-                                }}
-                                initialFocus
-                              />
-                              <div className="mt-3">
-                                <Label className="mb-2 block text-xs font-semibold">Waktu</Label>
-                                <Select
-                                  value={scheduleTime}
-                                  onValueChange={(value) => setScheduleTime(value)}
-                                >
-                                  <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Pilih waktu" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    {BOOKING_TIME_OPTIONS.map((option) => (
-                                      <SelectItem key={option} value={option}>
-                                        {option}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                              </div>
-                            </div>
-                          </PopoverContent>
-                        </Popover>
-                      )}
-                    />
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <CalendarIcon className="size-4 text-primary" />
+                    <Label htmlFor="schedule">Jadwal Booking</Label>
+                    <span className="text-destructive">*</span>
                   </div>
+                  <Controller
+                    name="schedule"
+                    control={control}
+                    render={() => (
+                      <Popover open={schedulePopoverOpen} onOpenChange={setSchedulePopoverOpen}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            id="schedule"
+                            type="button"
+                            variant="outline"
+                            className="w-full justify-between text-left font-normal"
+                          >
+                            <span className={scheduleValue ? 'text-foreground' : 'text-muted-foreground'}>
+                              {scheduleValue || 'Pilih tanggal & waktu'}
+                            </span>
+                            <CalendarIcon className="ml-2 size-4 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <div className="p-3">
+                            <Calendar
+                              mode="single"
+                              selected={scheduleDate}
+                              onSelect={handleScheduleDateSelect}
+                              disabled={(date) => {
+                                const today = new Date()
+                                today.setHours(0, 0, 0, 0)
+                                return date < today
+                              }}
+                              initialFocus
+                            />
+                            <div className="mt-3">
+                              <Label className="mb-2 block text-xs font-semibold">Waktu</Label>
+                              <Select
+                                value={scheduleTime}
+                                onValueChange={(value) => setScheduleTime(value)}
+                              >
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="Pilih waktu" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {BOOKING_TIME_OPTIONS.map((option) => (
+                                    <SelectItem key={option} value={option}>
+                                      {option}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    )}
+                  />
                   {errors.schedule && (
                     <p className="text-destructive text-xs">{errors.schedule.message}</p>
                   )}
-                  <div className="flex items-start gap-2 rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-[11px] sm:text-xs text-sky-700">
-                    <Info className="mt-0.5 size-3.5 shrink-0" />
+                  <div className="flex items-start gap-2 rounded-md border border-border/70 bg-muted/30 px-3 py-2 text-[11px] sm:text-xs text-primary">
+                    <Info className="mt-0.5 size-3.5 shrink-0 text-primary" />
                     <span>
                       Jam pengerjaan akan disesuaikan dengan ketersediaan slot jadwal yang telah diterima Admin MAKLIN. Tim kami akan menghubungi Anda melalui WhatsApp untuk konfirmasi jadwal.
                     </span>
                   </div>
                 </div>
 
-                {/* Alamat */}
                 <div className="grid gap-2">
-                  <Label htmlFor="address" className="text-sm font-semibold">
-                    Alamat / Lokasi <span className="text-destructive">*</span>
-                  </Label>
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <MapPin className="size-4 text-primary" />
+                    <Label htmlFor="address">Alamat / Lokasi</Label>
+                    <span className="text-destructive">*</span>
+                  </div>
                   <Textarea
                     id="address"
                     placeholder="Masukkan alamat lengkap Anda di Purwakarta"
@@ -1073,12 +1311,12 @@ export default function Home() {
                   )}
                 </div>
 
-                {/* Google Maps Link */}
                 <div className="grid gap-2">
-                  <Label htmlFor="googleMapsLink" className="text-sm font-semibold">
-                    Link Google Maps{' '}
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <Link2 className="size-4 text-primary" />
+                    <Label htmlFor="googleMapsLink">Link Google Maps</Label>
                     <span className="text-muted-foreground font-normal">(opsional)</span>
-                  </Label>
+                  </div>
                   <Input
                     id="googleMapsLink"
                     type="url"
@@ -1087,11 +1325,12 @@ export default function Home() {
                   />
                 </div>
 
-                {/* Pilih Layanan */}
                 <div className="grid gap-2">
-                  <Label htmlFor="service" className="text-sm font-semibold">
-                    Pilih Layanan <span className="text-destructive">*</span>
-                  </Label>
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <HomeIcon className="size-4 text-primary" />
+                    <Label htmlFor="service">Pilih Layanan</Label>
+                    <span className="text-destructive">*</span>
+                  </div>
                   <Controller
                     name="service"
                     control={control}
@@ -1136,12 +1375,12 @@ export default function Home() {
                   )}
                 </div>
 
-                {/* Catatan */}
                 <div className="grid gap-2">
-                  <Label htmlFor="notes" className="text-sm font-semibold">
-                    Catatan{' '}
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <Info className="size-4 text-primary" />
+                    <Label htmlFor="notes">Catatan</Label>
                     <span className="text-muted-foreground font-normal">(opsional)</span>
-                  </Label>
+                  </div>
                   <Textarea
                     id="notes"
                     placeholder="Catatan tambahan, misalnya jenis sofa, ukuran, dll."
@@ -1150,7 +1389,6 @@ export default function Home() {
                   />
                 </div>
 
-                {/* Terms */}
                 <div className="grid gap-3">
                   <div>
                     <h3 className="text-sm font-bold text-foreground">
@@ -1203,7 +1441,6 @@ export default function Home() {
                   )}
                 </div>
 
-                {/* Terms Checkbox */}
                 <div className="flex items-start gap-3">
                   <Controller
                     name="agreedToTerms"
@@ -1233,12 +1470,11 @@ export default function Home() {
                 )}
 
                 {bookingSubmitted && (
-                  <div className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-3 text-sm text-emerald-700">
+                  <div className="rounded-md border border-primary/30 bg-primary/10 px-3 py-3 text-sm text-primary">
                     Booking anda sudah dikirim ke Admin, selanjutnya akan diatur untuk penjadwalannya.
                   </div>
                 )}
 
-                {/* Submit */}
                 <Button
                   type="submit"
                   disabled={isSubmitting}
@@ -1262,9 +1498,7 @@ export default function Home() {
           </div>
         </AnimatedSection>
 
-        {/* ──────────────────────────────────────────────────────────
-            5. WHY CHOOSE US
-        ────────────────────────────────────────────────────────── */}
+        {/* 5. WHY CHOOSE US */}
         <AnimatedSection className="py-16 md:py-24 bg-muted/40">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
@@ -1327,35 +1561,27 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="relative max-w-3xl mx-auto">
-              {/* Vertical line */}
-              <div className="absolute left-5 md:left-1/2 top-0 bottom-0 w-0.5 bg-border md:-translate-x-px" />
+            <div className="relative max-w-7xl mx-auto">
+              {/* Horizontal line on desktop */}
+              <div className="hidden md:block absolute inset-x-0 top-1/2 h-px bg-border" />
 
-              {PROCESS_STEPS.map((step, idx) => (
-                <motion.div
-                  key={step.num}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-50px' }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className={`relative flex items-start gap-4 md:gap-0 mb-10 last:mb-0 ${
-                    idx % 2 === 0
-                      ? 'md:flex-row'
-                      : 'md:flex-row-reverse'
-                  }`}
-                >
-                  {/* Number badge on the line */}
-                  <div className="absolute left-5 md:left-1/2 -translate-x-1/2 z-10 flex items-center justify-center size-10 rounded-full bg-primary text-primary-foreground font-bold text-sm shadow-md">
-                    {step.num}
-                  </div>
-
-                  {/* Content card */}
-                  <div
-                    className={`ml-14 md:ml-0 md:w-[calc(50%-2.5rem)] ${
-                      idx % 2 === 0 ? 'md:pr-0 md:mr-auto' : 'md:pl-0 md:ml-auto'
-                    }`}
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                {PROCESS_STEPS.map((step, idx) => (
+                  <motion.div
+                    key={step.num}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-50px' }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    className="flex md:flex-1 flex-col items-start md:items-center gap-4 md:gap-2"
                   >
-                    <Card className="p-6 sm:p-8 border-border/60 shadow-sm hover:-translate-y-1 transition-transform">
+                    <div className="flex items-center md:flex-col gap-3 md:gap-2">
+                      <div className="size-10 rounded-full bg-primary text-primary-foreground font-bold flex items-center justify-center shadow-md">
+                        {step.num}
+                      </div>
+                    </div>
+
+                    <Card className="p-4 sm:p-6 border-border/60 shadow-sm md:mt-4">
                       <div className="flex items-center gap-3 mb-2">
                         <div className="flex items-center justify-center size-9 rounded-full bg-primary/10 text-primary shrink-0">
                           <step.icon className="size-5" />
@@ -1366,9 +1592,9 @@ export default function Home() {
                         {step.desc}
                       </p>
                     </Card>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </AnimatedSection>
@@ -1376,7 +1602,7 @@ export default function Home() {
         {/* ──────────────────────────────────────────────────────────
             7. BEFORE / AFTER GALLERY
         ────────────────────────────────────────────────────────── */}
-        <AnimatedSection className="py-16 md:py-24">
+        <AnimatedSection id="portfolio" className="py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
@@ -1405,7 +1631,7 @@ export default function Home() {
                     <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* Before */}
                       <div className="relative">
-                        <span className="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-md">
+                        <span className="absolute top-3 left-3 z-10 rounded-md bg-secondary/10 text-secondary text-xs font-bold px-2.5 py-1">
                           SEBELUM
                         </span>
                         <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
@@ -1467,17 +1693,31 @@ export default function Home() {
             >
               {TESTIMONIALS.map((t) => (
                 <motion.div key={t.name + t.loc} variants={fadeUp}>
-                  <Card className="h-full p-5 sm:p-6 border-border/60">
-                    <div className="flex items-center gap-1 mb-3">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <Star
-                          key={i}
-                          className="size-4 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
+                  <Card className="h-full p-5 sm:p-6 border-border/60 rounded-2xl shadow-lg">
+                    <div className="flex items-center gap-3 mb-4">
+                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary font-semibold">
+                      {t.name
+                        .split(' ')
+                        .map((part) => part[0])
+                        .join('')
+                        .slice(0, 2)
+                        .toUpperCase()}
                     </div>
-                    <Quote className="size-5 text-primary/20 mb-2 rotate-180" />
-                    <p className="text-sm text-foreground/90 leading-relaxed mb-4 italic">
+                    <div>
+                      <p className="text-sm font-bold">{t.name}</p>
+                      <p className="text-xs text-muted-foreground">{t.loc}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 mb-3">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className="size-4 fill-primary/85 text-primary/85"
+                      />
+                    ))}
+                  </div>
+                  <Quote className="size-5 text-primary/20 mb-2 rotate-180" />
+                  <p className="text-sm text-foreground/90 leading-relaxed mb-4 italic">
                       &ldquo;{t.text}&rdquo;
                     </p>
                     <div className="flex items-center justify-between">
@@ -1500,17 +1740,31 @@ export default function Home() {
                 <CarouselContent className="-ml-4">
                   {TESTIMONIALS.map((t) => (
                     <CarouselItem key={t.name + t.loc} className="pl-4 basis-[85%] sm:basis-[70%]">
-                      <Card className="h-full p-5 border-border/60">
-                        <div className="flex items-center gap-1 mb-3">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className="size-4 fill-yellow-400 text-yellow-400"
-                            />
-                          ))}
+                      <Card className="h-full p-5 border-border/60 rounded-2xl shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                        <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary font-semibold">
+                          {t.name
+                            .split(' ')
+                            .map((part) => part[0])
+                            .join('')
+                            .slice(0, 2)
+                            .toUpperCase()}
                         </div>
-                        <Quote className="size-5 text-primary/20 mb-2 rotate-180" />
-                        <p className="text-sm text-foreground/90 leading-relaxed mb-4 italic">
+                        <div>
+                          <p className="text-sm font-bold">{t.name}</p>
+                          <p className="text-xs text-muted-foreground">{t.loc}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 mb-3">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star
+                            key={i}
+                            className="size-4 fill-primary/85 text-primary/85"
+                          />
+                        ))}
+                      </div>
+                      <Quote className="size-5 text-primary/20 mb-2 rotate-180" />
+                      <p className="text-sm text-foreground/90 leading-relaxed mb-4 italic">
                           &ldquo;{t.text}&rdquo;
                         </p>
                         <div className="flex items-center justify-between">
@@ -1542,12 +1796,12 @@ export default function Home() {
               </h2>
             </div>
 
-            <Accordion type="single" collapsible className="space-y-3">
+            <Accordion type="single" collapsible className="space-y-4">
               {FAQS.map((faq, idx) => (
                 <AccordionItem
                   key={idx}
                   value={`faq-${idx}`}
-                  className="border border-border/60 rounded-[1.5rem] px-5 sm:px-6 bg-card shadow-sm"
+                  className="border border-border/60 rounded-2xl px-6 py-4 sm:px-6 bg-card shadow-sm"
                 >
                   <AccordionTrigger className="text-sm sm:text-base font-semibold hover:no-underline py-4">
                     {faq.q}
@@ -1612,25 +1866,25 @@ export default function Home() {
       {/* ────────────────────────────────────────────────────────────
           13. FOOTER
       ──────────────────────────────────────────────────────────── */}
-      <footer className="bg-foreground text-background/80 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+      <footer className="bg-brand text-brand-foreground mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-14">
             {/* Brand */}
             <div>
-              <span className="text-xl font-extrabold text-background tracking-tight">
+              <span className="text-xl font-extrabold text-brand-foreground tracking-tight">
                 MAKLIN
               </span>
-              <p className="mt-1 text-xs text-background/50 font-medium uppercase tracking-wider">
+              <p className="mt-1 text-xs text-brand-foreground/70 font-medium uppercase tracking-wider">
                 Home Cleaning
               </p>
-              <p className="mt-4 text-sm leading-relaxed text-background/70">
+              <p className="mt-4 text-sm leading-relaxed text-brand-foreground/80">
                 Jasa Cuci Sofa Purwakarta. Home service dengan peralatan modern dan chemical aman.
               </p>
             </div>
 
             {/* Layanan */}
             <div>
-              <h4 className="text-sm font-bold text-background mb-4 uppercase tracking-wider">
+              <h4 className="text-sm font-bold text-brand-foreground mb-4 uppercase tracking-wider">
                 Layanan
               </h4>
               <ul className="space-y-2.5">
@@ -1641,7 +1895,7 @@ export default function Home() {
                         href={WA_URL}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-background/70 hover:text-background transition-colors"
+                        className="text-sm text-brand-foreground/80 hover:text-brand-foreground transition-colors"
                       >
                         {s}
                       </a>
@@ -1653,17 +1907,17 @@ export default function Home() {
 
             {/* Kontak */}
             <div>
-              <h4 className="text-sm font-bold text-background mb-4 uppercase tracking-wider">
+              <h4 className="text-sm font-bold text-brand-foreground mb-4 uppercase tracking-wider">
                 Kontak
               </h4>
               <ul className="space-y-3">
-                <li className="flex items-start gap-2.5 text-sm text-background/70">
+                <li className="flex items-start gap-2.5 text-sm text-brand-foreground/80">
                   <Phone className="size-4 shrink-0 mt-0.5" />
                   <a
                     href={WA_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-background transition-colors"
+                    className="hover:text-brand-foreground transition-colors"
                   >
                     0857-9367-6315
                   </a>
@@ -1681,17 +1935,17 @@ export default function Home() {
 
             {/* Jam Operasional */}
             <div>
-              <h4 className="text-sm font-bold text-background mb-4 uppercase tracking-wider">
+              <h4 className="text-sm font-bold text-brand-foreground mb-4 uppercase tracking-wider">
                 Jam Operasional
               </h4>
               <div className="flex items-center gap-2 mb-2">
-                <Clock className="size-4 text-background/70" />
-                <span className="text-sm text-background/70">Senin - Minggu</span>
+                <Clock className="size-4 text-brand-foreground/80" />
+                <span className="text-sm text-brand-foreground/80">Senin - Minggu</span>
               </div>
-              <p className="text-sm font-semibold text-background mb-1">07:30 - 16:30</p>
+              <p className="text-sm font-semibold text-brand-foreground mb-1">07:30 - 16:30</p>
               <Badge
                 variant="secondary"
-                className="bg-background/10 text-background/80 text-xs mt-1"
+                className="bg-brand-light/10 text-brand-foreground text-xs mt-1"
               >
                 Setiap hari buka
               </Badge>
@@ -1707,8 +1961,47 @@ export default function Home() {
       </footer>
 
       {/* ────────────────────────────────────────────────────────────
-          14. WHATSAPP FLOATING BUTTON
+          14. FLOATING BOOKING & WHATSAPP BUTTONS
       ──────────────────────────────────────────────────────────── */}
+      <div
+        className={`hidden lg:flex fixed right-6 bottom-32 z-50 flex-col gap-3 transition-all duration-300 ${
+          showDesktopStickyBooking ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0 pointer-events-none'
+        }`}
+      >
+        <Button
+          size="sm"
+          className="rounded-full bg-primary text-primary-foreground px-5 py-3 shadow-lg"
+          onClick={() => scrollTo('#booking')}
+        >
+          Booking Sekarang
+        </Button>
+        <Button asChild variant="outline" size="sm" className="rounded-full px-5 py-3 shadow-lg">
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer">
+            WhatsApp
+          </a>
+        </Button>
+      </div>
+      <div className="fixed inset-x-0 bottom-0 z-50 sm:hidden bg-background/95 border-t border-border/70 p-3 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2">
+          <div className="grid grid-cols-2 gap-2">
+            <Button asChild variant="outline" size="sm" className="min-h-[3rem] rounded-full px-4 py-3">
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer">
+                WhatsApp
+              </a>
+            </Button>
+            <Button asChild variant="secondary" size="sm" className="min-h-[3rem] rounded-full px-4 py-3">
+              <a href="tel:085793676315">Telepon</a>
+            </Button>
+          </div>
+          <Button
+            size="sm"
+            className="w-full rounded-full bg-primary text-primary-foreground font-semibold px-4 py-3"
+            onClick={() => scrollTo('#booking')}
+          >
+            Booking Sekarang
+          </Button>
+        </div>
+      </div>
       <WhatsAppButton />
     </div>
   )
