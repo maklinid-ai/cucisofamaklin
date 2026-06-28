@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, type Variants } from 'framer-motion'
 import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -17,6 +17,9 @@ import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion'
+import { Calendar } from '@/components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import {
   Sheet,
@@ -34,6 +37,11 @@ import {
   CarouselNext,
 } from '@/components/ui/carousel'
 import { WhatsAppButton } from '@/components/landing/whatsapp-button'
+import {
+  BOOKING_TIME_OPTIONS,
+  formatBookingSchedule,
+  getBookingScheduleError,
+} from '@/lib/booking'
 
 import {
   Wind,
@@ -64,17 +72,20 @@ import {
   Truck,
   Shield,
   Send,
+  Info,
+  Calendar as CalendarIcon,
 } from 'lucide-react'
 
 // ─── Constants ───────────────────────────────────────────────────────
 const WA_NUMBER = '6285793676315'
 const WA_MESSAGE = 'Halo MAKLIN, saya ingin konsultasi tentang jasa cuci sofa.'
 const WA_URL = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`
+const CURRENT_YEAR = new Date().getFullYear()
 
 const NAV_LINKS = [
   { label: 'Layanan', href: '#layanan' },
   { label: 'Proses', href: '#proses' },
-  { label: 'Harga', href: '#harga' },
+  { label: 'Layanan', href: '#harga' },
   { label: 'Testimoni', href: '#testimoni' },
   { label: 'FAQ', href: '#faq' },
 ]
@@ -220,28 +231,39 @@ const PROCESS_STEPS = [
 const PRICING = [
   {
     name: 'Cuci Sofa',
-    desc: 'Deep cleaning sofa fabric, kulit, dan velvet',
+    desc: 'Jasa cuci sofa Purwakarta untuk sofa fabric, kulit, dan velvet yang kembali bersih, wangi, dan nyaman.',
     popular: true,
+    badge: 'Best Seller',
+    benefits: ['Sofa lebih bersih & higienis', 'Bebas debu, tungau & bau', 'Aman untuk berbagai bahan sofa'],
+    includes: ['Vacuum debu', 'Pre-Treatment noda', 'Deep Cleaning', 'Extraction', 'Parfum khusus'],
   },
   {
     name: 'Cuci Kasur',
-    desc: 'Bersihkan kasur dari tungau dan bakteri',
+    desc: 'Jasa cuci kasur Purwakarta untuk kasur lebih higienis, segar, dan nyaman untuk kualitas tidur yang lebih baik.',
     popular: false,
+    benefits: ['Kasur lebih higienis', 'Mengurangi tungau & bakteri', 'Tidur lebih nyaman'],
+    includes: ['Vacuum', 'Wet Cleaning', 'Penghilangan noda', 'Extraction', 'Parfum khusus'],
   },
   {
     name: 'Cuci Karpet',
-    desc: 'Karpet bersih dan wangi seperti baru',
+    desc: 'Jasa cuci karpet Purwakarta untuk karpet bersih, harum, dan bebas debu di rumah yang lebih sehat.',
     popular: false,
+    benefits: ['Karpet lebih bersih', 'Bebas debu & bau', 'Warna tampak lebih segar'],
+    includes: ['Vacuum', 'Deep Cleaning', 'Penghilangan noda', 'Extraction', 'Parfum khusus'],
   },
   {
     name: 'Cuci Kursi',
-    desc: 'Kursi kantor, makan, dan santai',
+    desc: 'Jasa cuci kursi Purwakarta untuk kursi rumah maupun kantor yang kembali bersih, higienis, dan nyaman.',
     popular: false,
+    benefits: ['Bersih & harum', 'Mengurangi debu & noda', 'Cocok untuk rumah maupun kantor'],
+    includes: ['Vacuum', 'Deep Cleaning', 'Penghilangan noda', 'Extraction', 'Parfum khusus'],
   },
   {
     name: 'Cuci Jok Mobil',
-    desc: 'Jok mobil fabric dan leather',
+    desc: 'Jasa cuci jok mobil Purwakarta untuk interior mobil lebih bersih, segar, dan nyaman untuk setiap perjalanan.',
     popular: false,
+    benefits: ['Jok lebih higienis', 'Mengurangi debu & bau', 'Kabina lebih segar'],
+    includes: ['Vacuum Interior', 'Deep Cleaning', 'Penghilangan noda', 'Extraction', 'Parfum khusus'],
   },
 ]
 
@@ -329,13 +351,63 @@ const BOOKING_INFO = [
 ]
 
 // ─── Form Schema ─────────────────────────────────────────────────────
+const BOOKING_SERVICES = [
+  'Cuci Sofa',
+  'Cuci Kasur',
+  'Cuci Karpet',
+  'Cuci Kursi',
+  'Cuci Jok Mobil',
+  'Cuci Spring Bed',
+]
+
+const TERMS_SECTIONS = [
+  {
+    title: 'A. Langkah Pencucian',
+    items: [
+      'Vakum kering untuk menghilangkan debu dan kotoran.',
+      'Cuci basah: dimulai dengan vakum, kemudian diberi cairan pembersih khusus, disikat, dibilas, lalu divakum kembali untuk pengeringan, dan diakhiri dengan pemberian parfum khusus.',
+      'Pengeringan atau tingkat kekeringan sekitar 60% - 70%. Jika dijemur pada malam hari, sofa/bed dapat digunakan keesokan harinya. Jika di dalam ruangan, dapat menggunakan kipas atau AC, dan sofa/bed bisa digunakan minimal esok hari.',
+      'Pengerjaan oleh teknisi kami dilakukan semaksimal mungkin sehingga terjamin kebersihan dan kehigienisannya serta noda bisa hilang. Tetapi ada beberapa noda yang mungkin tidak bisa hilang 100% sempurna, tergantung pada jenis dan kondisi noda serta sudah berapa lama noda tersebut.',
+    ],
+  },
+  {
+    title: 'B. Ketentuan Pengerjaan',
+    items: [
+      'Sofa/bed dicuci semua sisi: depan, belakang, atas, bawah, dan bagian samping.',
+      'Cuci dan vacuum (Wet Clean) untuk menghilangkan noda, tungau, dan kutu kasur.',
+      'Ada beberapa jenis dan kondisi noda yang perlu tambahan chemical khusus, maka akan dikenakan tambahan biaya Rp50.000/liter.',
+      'Jenis kasur/bed putih atau berbahan latex ada tambahan biaya Rp50.000/bed.',
+      'Gratis transportasi dengan jarak maksimal 5 KM dari kantor kami: Jl. Jend. Ahmad Yani No.113, Cipaisan, Kec. Purwakarta, Kabupaten Purwakarta, Jawa Barat.',
+      'Pengerjaan kami adalah cleaning, jadi teknisi kami tidak wajib menunggu sampai kering.',
+      'Minimal daya listrik 900 watt.',
+      'Sebelum pengerjaan pencucian mohon dipastikan barang berharga disimpan terlebih dahulu. Jika ada kehilangan, hal tersebut di luar tanggung jawab kami.',
+    ],
+  },
+  {
+    title: 'C. Garansi Pengerjaan dan Pembatalan Order',
+    items: [
+      'Garansi jasa jika timbul bau/jamur setelah pencucian maksimal H+3 setelah pengerjaan dengan disertai bukti foto/video.',
+      'Pembatalan/cancel dan reschedule wajib H-1.',
+      'Pembatalan saat tanggal jadwal pengerjaan atau hari H dikenakan pembayaran order penuh atau minimal Rp250.000.',
+    ],
+  },
+]
+
 const bookingSchema = z.object({
   name: z.string().min(2, 'Nama minimal 2 karakter'),
   whatsapp: z.string().min(10, 'Nomor WhatsApp tidak valid'),
-  schedule: z.string().min(1, 'Pilih jadwal'),
+  schedule: z.string().superRefine((value, ctx) => {
+    const message = getBookingScheduleError(value)
+    if (message) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message,
+      })
+    }
+  }),
   address: z.string().min(5, 'Alamat terlalu singkat'),
   googleMapsLink: z.string().optional(),
-  service: z.string().min(1, 'Pilih layanan'),
+  service: z.array(z.string()).min(1, 'Pilih minimal 1 layanan'),
   notes: z.string().optional(),
   agreedToTerms: z.literal(true, {
     message: 'Anda harus menyetujui syarat dan ketentuan',
@@ -345,7 +417,7 @@ const bookingSchema = z.object({
 type BookingFormValues = z.infer<typeof bookingSchema>
 
 // ─── Animation Variants ──────────────────────────────────────────────
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
 }
@@ -425,6 +497,11 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [hasReadTerms, setHasReadTerms] = useState(false)
+  const [bookingSubmitted, setBookingSubmitted] = useState(false)
+  const [scheduleDate, setScheduleDate] = useState<Date>()
+  const [scheduleTime, setScheduleTime] = useState('')
+  const [schedulePopoverOpen, setSchedulePopoverOpen] = useState(false)
 
   // ── Scroll listener for navbar ──
   useEffect(() => {
@@ -444,12 +521,23 @@ export default function Home() {
     }
   }
 
+  const handleTermsScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const target = event.currentTarget
+    const isAtBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 8
+
+    if (isAtBottom) {
+      setHasReadTerms(true)
+    }
+  }
+
   // ── Form ──
   const {
     register,
     handleSubmit,
     control,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<BookingFormValues>({
     resolver: zodResolver(bookingSchema),
@@ -459,11 +547,40 @@ export default function Home() {
       schedule: '',
       address: '',
       googleMapsLink: '',
-      service: '',
+      service: [],
       notes: '',
       agreedToTerms: undefined as unknown as true,
     },
   })
+
+  useEffect(() => {
+    if (scheduleDate && scheduleTime) {
+      setValue('schedule', formatBookingSchedule(scheduleDate, scheduleTime), {
+        shouldValidate: true,
+      })
+    } else {
+      setValue('schedule', '', { shouldValidate: true })
+    }
+  }, [scheduleDate, scheduleTime, setValue])
+
+  const scheduleValue = watch('schedule')
+
+  const handleScheduleDateSelect = (date: Date | undefined) => {
+    if (!date) {
+      setScheduleDate(undefined)
+      setScheduleTime('')
+      setSchedulePopoverOpen(false)
+      return
+    }
+
+    const normalizedDate = new Date(date)
+    normalizedDate.setHours(0, 0, 0, 0)
+    setScheduleDate(normalizedDate)
+    if (!scheduleTime) {
+      setScheduleTime(BOOKING_TIME_OPTIONS[0])
+    }
+    setSchedulePopoverOpen(false)
+  }
 
   const onSubmit = async (data: BookingFormValues) => {
     setIsSubmitting(true)
@@ -471,21 +588,50 @@ export default function Home() {
       const res = await fetch('/api/booking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          name: data.name.trim(),
+          whatsapp: data.whatsapp.trim(),
+          address: data.address.trim(),
+          googleMapsLink: data.googleMapsLink?.trim() ?? '',
+          notes: data.notes?.trim() ?? '',
+        }),
       })
       const json = await res.json()
       if (json.success && json.whatsappUrl) {
-        toast.success('Booking berhasil! Mengarahkan ke WhatsApp...')
-        window.open(json.whatsappUrl, '_blank', 'noopener,noreferrer')
-        reset()
+        setBookingSubmitted(true)
+        toast.success('Booking anda sudah dikirim ke Admin, selanjutnya akan diatur untuk penjadwalannya.')
+
+        const whatsappWindow = window.open(json.whatsappUrl, '_blank', 'noopener,noreferrer')
+        if (!whatsappWindow) {
+          window.location.assign(json.whatsappUrl)
+        }
+
+        setScheduleDate(undefined)
+        setScheduleTime('')
+        setSchedulePopoverOpen(false)
+        setHasReadTerms(false)
+        setValue('agreedToTerms', false as unknown as true, { shouldValidate: false })
+        reset({
+          name: '',
+          whatsapp: '',
+          schedule: '',
+          address: '',
+          googleMapsLink: '',
+          service: [],
+          notes: '',
+          agreedToTerms: false as unknown as true,
+        })
       } else {
-        toast.error(json.error || 'Terjadi kesalahan. Silakan coba lagi.')
+        setBookingSubmitted(false)
+        toast.error(json.error || 'Gagal menyimpan booking. Silakan coba kembali.')
         if (json.details) {
           console.error('Validation details:', json.details)
         }
       }
     } catch {
-      toast.error('Gagal menghubungi server. Periksa koneksi internet Anda.')
+      setBookingSubmitted(false)
+      toast.error('Gagal menyimpan booking. Silakan coba kembali.')
     } finally {
       setIsSubmitting(false)
     }
@@ -510,15 +656,17 @@ export default function Home() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-1 group"
+            className="flex items-center"
             aria-label="MAKLIN Home Cleaning"
           >
-            <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-primary">
-              MAKLIN
-            </span>
-            <span className="hidden sm:inline text-[10px] sm:text-xs text-muted-foreground font-medium tracking-wide uppercase ml-1">
-              Home Cleaning
-            </span>
+            <Image
+              src="/logo-maklin-2_New.png"
+              alt="MAKLIN Home Cleaning"
+              width={160}
+              height={48}
+              priority
+              className="h-10 w-auto sm:h-12"
+            />
           </Link>
 
           {/* Desktop nav links */}
@@ -553,8 +701,14 @@ export default function Home() {
               </SheetTrigger>
               <SheetContent side="right" className="w-72 pt-10">
                 <SheetHeader>
-                  <SheetTitle className="text-left text-xl font-bold text-primary">
-                    MAKLIN
+                  <SheetTitle className="text-left">
+                    <Image
+                      src="/logo-maklin-1_New.png"
+                      alt="MAKLIN Home Cleaning"
+                      width={160}
+                      height={48}
+                      className="h-12 w-auto"
+                    />
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-1 mt-4">
@@ -664,7 +818,7 @@ export default function Home() {
                 size="lg"
                 className="w-full sm:w-auto text-base font-semibold px-8 border-white/30 text-white hover:bg-white/10 hover:text-white"
               >
-                <button onClick={() => scrollTo('#harga')}>Lihat Harga</button>
+                <button onClick={() => scrollTo('#harga')}>Lihat Layanan</button>
               </Button>
             </motion.div>
 
@@ -676,7 +830,7 @@ export default function Home() {
               className="mt-6 text-sm sm:text-base text-yellow-300 font-medium flex items-center justify-center gap-1.5"
             >
               {'★'.repeat(5)}{' '}
-              <span className="text-white/80 ml-1">Dipercaya <Counter target={150} suffix="+" /> Pelanggan Purwakarta</span>
+              <span className="text-white/80 ml-1">Dipercaya <Counter target={1812} suffix="+" /> Pelanggan Purwakarta</span>
             </motion.p>
           </div>
         </section>
@@ -941,7 +1095,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
-                Daftar Harga Jasa Kami
+                Layanan Kami
               </h2>
               <p className="mt-3 text-muted-foreground text-base sm:text-lg">
                 Harga terjangkau dengan hasil maksimal. Konsultasi gratis!
@@ -971,9 +1125,10 @@ export default function Home() {
                           : 'border-border/60'
                       }`}
                     >
-                      {item.popular && (
-                        <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3">
-                          Paling Populer
+                      {item.badge && (
+                        <Badge className="absolute right-2 top-2 bg-amber-500 text-white border-0 text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                          <Award className="size-3" />
+                          {item.badge}
                         </Badge>
                       )}
                       <div className="flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary mx-auto mb-3 mt-1">
@@ -983,9 +1138,37 @@ export default function Home() {
                       <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
                         {item.desc}
                       </p>
-                      <p className="text-sm font-semibold text-primary mb-4">
-                        Harga mulai dari ...
-                      </p>
+
+                      <div className="text-left space-y-3 mb-4">
+                        <div>
+                          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
+                            Yang Anda Dapatkan
+                          </p>
+                          <ul className="space-y-1">
+                            {item.benefits.map((benefit) => (
+                              <li key={benefit} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
+                                <span className="mt-0.5 text-primary">•</span>
+                                <span>{benefit}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        <div>
+                          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
+                            Termasuk
+                          </p>
+                          <ul className="space-y-1">
+                            {item.includes.map((include) => (
+                              <li key={include} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
+                                <CheckCircle className="mt-0.5 size-3.5 shrink-0 text-primary" />
+                                <span>{include}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="mb-4" />
                       <Button
                         asChild
                         variant={item.popular ? 'default' : 'outline'}
@@ -1015,9 +1198,10 @@ export default function Home() {
                             : 'border-border/60'
                         }`}
                       >
-                        {item.popular && (
-                          <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3">
-                            Paling Populer
+                        {item.badge && (
+                          <Badge className="absolute right-2 top-2 bg-amber-500 text-white border-0 text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                            <Award className="size-3" />
+                            {item.badge}
                           </Badge>
                         )}
                         <div className="flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary mx-auto mb-3 mt-1">
@@ -1027,9 +1211,38 @@ export default function Home() {
                         <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
                           {item.desc}
                         </p>
-                        <p className="text-sm font-semibold text-primary mb-4">
-                          Harga mulai dari ...
-                        </p>
+
+                        <div className="text-left space-y-3 mb-4">
+                          <div>
+                            <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
+                              Yang Anda Dapatkan
+                            </p>
+                            <ul className="space-y-1">
+                              {item.benefits.map((benefit) => (
+                                <li key={benefit} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
+                                  <span className="mt-0.5 text-primary">•</span>
+                                  <span>{benefit}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div>
+                            <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-1.5">
+                              Termasuk
+                            </p>
+                            <ul className="space-y-1">
+                              {item.includes.map((include) => (
+                                <li key={include} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
+                                  <CheckCircle className="mt-0.5 size-3.5 shrink-0 text-primary" />
+                                  <span>{include}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div className="mb-4" />
                         <Button
                           asChild
                           variant={item.popular ? 'default' : 'outline'}
@@ -1059,7 +1272,7 @@ export default function Home() {
                 Apa Kata Pelanggan Kami
               </h2>
               <p className="mt-3 text-muted-foreground text-base sm:text-lg">
-                Lebih dari 150 pelanggan puas dengan layanan MAKLIN
+                Lebih dari ratusan pelanggan puas dengan layanan MAKLIN
               </p>
             </div>
 
@@ -1247,19 +1460,71 @@ export default function Home() {
                   <Label htmlFor="schedule" className="text-sm font-semibold">
                     Jadwal Booking <span className="text-destructive">*</span>
                   </Label>
-                  <select
-                    id="schedule"
-                    {...register('schedule')}
-                    className="flex h-9 w-full items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 appearance-none"
-                  >
-                    <option value="">Pilih jadwal...</option>
-                    <option value="Hari Ini">Hari Ini</option>
-                    <option value="Besok">Besok</option>
-                    <option value="Pilih Tanggal Lain">Pilih Tanggal Lain</option>
-                  </select>
+                  <div className="grid gap-2">
+                    <Controller
+                      name="schedule"
+                      control={control}
+                      render={() => (
+                        <Popover open={schedulePopoverOpen} onOpenChange={setSchedulePopoverOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              id="schedule"
+                              type="button"
+                              variant="outline"
+                              className="w-full justify-between text-left font-normal"
+                            >
+                              <span className={scheduleValue ? 'text-foreground' : 'text-muted-foreground'}>
+                                {scheduleValue || 'Pilih tanggal & waktu'}
+                              </span>
+                              <CalendarIcon className="ml-2 size-4 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <div className="p-3">
+                              <Calendar
+                                mode="single"
+                                selected={scheduleDate}
+                                onSelect={handleScheduleDateSelect}
+                                disabled={(date) => {
+                                  const today = new Date()
+                                  today.setHours(0, 0, 0, 0)
+                                  return date < today
+                                }}
+                                initialFocus
+                              />
+                              <div className="mt-3">
+                                <Label className="mb-2 block text-xs font-semibold">Waktu</Label>
+                                <Select
+                                  value={scheduleTime}
+                                  onValueChange={(value) => setScheduleTime(value)}
+                                >
+                                  <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Pilih waktu" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {BOOKING_TIME_OPTIONS.map((option) => (
+                                      <SelectItem key={option} value={option}>
+                                        {option}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      )}
+                    />
+                  </div>
                   {errors.schedule && (
                     <p className="text-destructive text-xs">{errors.schedule.message}</p>
                   )}
+                  <div className="flex items-start gap-2 rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-[11px] sm:text-xs text-sky-700">
+                    <Info className="mt-0.5 size-3.5 shrink-0" />
+                    <span>
+                      Jam pengerjaan akan disesuaikan dengan ketersediaan slot jadwal yang telah diterima Admin MAKLIN. Tim kami akan menghubungi Anda melalui WhatsApp untuk konfirmasi jadwal.
+                    </span>
+                  </div>
                 </div>
 
                 {/* Alamat */}
@@ -1298,19 +1563,45 @@ export default function Home() {
                   <Label htmlFor="service" className="text-sm font-semibold">
                     Pilih Layanan <span className="text-destructive">*</span>
                   </Label>
-                  <select
-                    id="service"
-                    {...register('service')}
-                    className="flex h-9 w-full items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 appearance-none"
-                  >
-                    <option value="">Pilih layanan...</option>
-                    <option value="Cuci Sofa">Cuci Sofa</option>
-                    <option value="Cuci Kasur">Cuci Kasur</option>
-                    <option value="Cuci Karpet">Cuci Karpet</option>
-                    <option value="Cuci Kursi">Cuci Kursi</option>
-                    <option value="Cuci Jok Mobil">Cuci Jok Mobil</option>
-                    <option value="Cuci Spring Bed">Cuci Spring Bed</option>
-                  </select>
+                  <Controller
+                    name="service"
+                    control={control}
+                    render={({ field }) => (
+                      <div
+                        id="service"
+                        className="flex flex-wrap gap-2 rounded-md border border-input bg-transparent p-3"
+                        aria-invalid={!!errors.service}
+                      >
+                        {BOOKING_SERVICES.map((service) => {
+                          const selectedServices = field.value ?? []
+                          const isSelected = selectedServices.includes(service)
+
+                          return (
+                            <button
+                              key={service}
+                              type="button"
+                              aria-pressed={isSelected}
+                              onClick={() => {
+                                field.onChange(
+                                  isSelected
+                                    ? selectedServices.filter((item) => item !== service)
+                                    : [...selectedServices, service]
+                                )
+                              }}
+                              className={`inline-flex min-h-10 items-center gap-2 rounded-full border px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
+                                isSelected
+                                  ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+                                  : 'border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground'
+                              }`}
+                            >
+                              {isSelected && <CheckCircle className="size-4 shrink-0" />}
+                              <span>{service}</span>
+                            </button>
+                          )
+                        })}
+                      </div>
+                    )}
+                  />
                   {errors.service && (
                     <p className="text-destructive text-xs">{errors.service.message}</p>
                   )}
@@ -1330,6 +1621,59 @@ export default function Home() {
                   />
                 </div>
 
+                {/* Terms */}
+                <div className="grid gap-3">
+                  <div>
+                    <h3 className="text-sm font-bold text-foreground">
+                      Syarat dan Ketentuan Layanan
+                    </h3>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Wajib dibaca sebelum menyetujui dan mengirim booking.
+                    </p>
+                  </div>
+                  <div
+                    className="h-72 overflow-y-auto rounded-md border border-border/70 bg-muted/30"
+                    onScroll={handleTermsScroll}
+                    tabIndex={0}
+                  >
+                    <div className="space-y-5 p-4 text-xs sm:text-sm leading-relaxed text-foreground">
+                      {TERMS_SECTIONS.map((section) => (
+                        <section key={section.title} className="space-y-2">
+                          <h4 className="font-bold">{section.title}</h4>
+                          <ol className="list-decimal space-y-1.5 pl-5 text-muted-foreground">
+                            {section.items.map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                          </ol>
+                        </section>
+                      ))}
+
+                      <section className="space-y-2">
+                        <h4 className="font-bold">D. Pembayaran</h4>
+                        <div className="space-y-3 text-muted-foreground">
+                          <p>Pembayaran dengan transfer ke:</p>
+                          <div className="rounded-md border border-border/70 bg-background p-3">
+                            <p className="font-semibold text-foreground">Bank Mandiri</p>
+                            <p>A.n. ELA SARIFATULAELA</p>
+                            <p>No. Rekening: 1730004377678</p>
+                          </div>
+                          <p>atau</p>
+                          <div className="rounded-md border border-border/70 bg-background p-3">
+                            <p className="font-semibold text-foreground">Bank BCA</p>
+                            <p>A.n. MAKIN BERSIH KLIN PT</p>
+                            <p>No. Rekening: 231-3014231</p>
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                  {!hasReadTerms && (
+                    <p className="text-xs text-muted-foreground">
+                      Scroll sampai bagian bawah Terms untuk mengaktifkan checkbox persetujuan.
+                    </p>
+                  )}
+                </div>
+
                 {/* Terms Checkbox */}
                 <div className="flex items-start gap-3">
                   <Controller
@@ -1339,18 +1683,30 @@ export default function Home() {
                       <Checkbox
                         id="terms"
                         checked={field.value}
-                        onCheckedChange={(val) => field.onChange(val === true)}
+                        disabled={!hasReadTerms}
+                        onCheckedChange={(val) => field.onChange(hasReadTerms && val === true)}
                         aria-invalid={!!errors.agreedToTerms}
                       />
                     )}
                   />
-                  <Label htmlFor="terms" className="text-xs sm:text-sm leading-relaxed cursor-pointer">
+                  <Label
+                    htmlFor="terms"
+                    className={`text-xs sm:text-sm leading-relaxed ${
+                      hasReadTerms ? 'cursor-pointer' : 'cursor-not-allowed text-muted-foreground'
+                    }`}
+                  >
                     Saya telah membaca, memahami, dan menyetujui{' '}
                     <span className="font-semibold">Syarat &amp; Ketentuan Layanan MAKLIN</span>.
                   </Label>
                 </div>
                 {errors.agreedToTerms && (
                   <p className="text-destructive text-xs">{errors.agreedToTerms.message}</p>
+                )}
+
+                {bookingSubmitted && (
+                  <div className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-3 text-sm text-emerald-700">
+                    Booking anda sudah dikirim ke Admin, selanjutnya akan diatur untuk penjadwalannya.
+                  </div>
                 )}
 
                 {/* Submit */}
@@ -1363,7 +1719,7 @@ export default function Home() {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="size-4 animate-spin" />
-                      Memproses...
+                      Menyimpan Booking...
                     </>
                   ) : (
                     <>
@@ -1505,7 +1861,7 @@ export default function Home() {
           <Separator className="my-8 bg-background/10" />
 
           <p className="text-center text-xs text-background/40">
-            &copy; 2025 MAKLIN. All rights reserved.
+            &copy; {CURRENT_YEAR} MAKLIN. All rights reserved.
           </p>
         </div>
       </footer>

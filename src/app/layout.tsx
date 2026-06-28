@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -30,7 +31,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "MAKLIN Home Cleaning" }],
   icons: {
-    icon: "/favicon.ico",
+    icon: "/logo-web-page.png",
+    shortcut: "/logo-web-page.png",
+    apple: "/logo-web-page.png",
   },
   openGraph: {
     title: "Jasa Cuci Sofa Purwakarta | MAKLIN Home Cleaning",
@@ -57,8 +60,53 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
+        <Script id="strip-extension-attrs" strategy="beforeInteractive">
+          {`
+            (function () {
+              var ATTRIBUTE = 'fdprocessedid';
+
+              function stripAttribute(root) {
+                if (!root || root.nodeType !== 1) return;
+                if (root.hasAttribute && root.hasAttribute(ATTRIBUTE)) {
+                  root.removeAttribute(ATTRIBUTE);
+                }
+                if (root.querySelectorAll) {
+                  root.querySelectorAll('[' + ATTRIBUTE + ']').forEach(function (element) {
+                    element.removeAttribute(ATTRIBUTE);
+                  });
+                }
+              }
+
+              function start() {
+                if (!document.body) return;
+                stripAttribute(document.body);
+                new MutationObserver(function (mutations) {
+                  mutations.forEach(function (mutation) {
+                    if (mutation.type === 'attributes') {
+                      stripAttribute(mutation.target);
+                    } else {
+                      mutation.addedNodes.forEach(stripAttribute);
+                    }
+                  });
+                }).observe(document.body, {
+                  attributes: true,
+                  attributeFilter: [ATTRIBUTE],
+                  childList: true,
+                  subtree: true
+                });
+              }
+
+              if (document.body) {
+                start();
+              } else {
+                document.addEventListener('DOMContentLoaded', start, { once: true });
+              }
+            })();
+          `}
+        </Script>
         {children}
         <Toaster />
       </body>
