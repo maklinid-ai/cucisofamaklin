@@ -790,14 +790,6 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="hidden md:flex items-center gap-3">
-            <Button asChild size="sm" className="rounded-full font-semibold">
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer">
-                Booking Sekarang
-              </a>
-            </Button>
-          </div>
-
           <div className="md:hidden">
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
@@ -1866,18 +1858,18 @@ export default function Home() {
       {/* ────────────────────────────────────────────────────────────
           13. FOOTER
       ──────────────────────────────────────────────────────────── */}
-      <footer className="bg-brand text-brand-foreground mt-auto">
+      <footer className="bg-slate-950 text-slate-100 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-14">
             {/* Brand */}
             <div>
-              <span className="text-xl font-extrabold text-brand-foreground tracking-tight">
+              <span className="text-xl font-extrabold text-slate-100 tracking-tight">
                 MAKLIN
               </span>
-              <p className="mt-1 text-xs text-brand-foreground/70 font-medium uppercase tracking-wider">
+              <p className="mt-1 text-xs text-slate-300/80 font-medium uppercase tracking-wider">
                 Home Cleaning
               </p>
-              <p className="mt-4 text-sm leading-relaxed text-brand-foreground/80">
+              <p className="mt-4 text-sm leading-relaxed text-slate-300/80">
                 Jasa Cuci Sofa Purwakarta. Home service dengan peralatan modern dan chemical aman.
               </p>
             </div>
@@ -1907,26 +1899,26 @@ export default function Home() {
 
             {/* Kontak */}
             <div>
-              <h4 className="text-sm font-bold text-brand-foreground mb-4 uppercase tracking-wider">
+              <h4 className="text-sm font-bold text-slate-100 mb-4 uppercase tracking-wider">
                 Kontak
               </h4>
               <ul className="space-y-3">
-                <li className="flex items-start gap-2.5 text-sm text-brand-foreground/80">
+                <li className="flex items-start gap-2.5 text-sm text-slate-300/80">
                   <Phone className="size-4 shrink-0 mt-0.5" />
                   <a
                     href={WA_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-brand-foreground transition-colors"
+                    className="hover:text-slate-100 transition-colors"
                   >
                     0857-9367-6315
                   </a>
                 </li>
-                <li className="flex items-start gap-2.5 text-sm text-background/70">
+                <li className="flex items-start gap-2.5 text-sm text-slate-300/70">
                   <Instagram className="size-4 shrink-0 mt-0.5" />
                   <span>@maklin_megacemerlang.purwakarta</span>
                 </li>
-                <li className="flex items-start gap-2.5 text-sm text-background/70">
+                <li className="flex items-start gap-2.5 text-sm text-slate-300/70">
                   <MapPin className="size-4 shrink-0 mt-0.5" />
                   <span>Jl. Jend. A Yani 113, Purwakarta</span>
                 </li>
@@ -1952,9 +1944,9 @@ export default function Home() {
             </div>
           </div>
 
-          <Separator className="my-8 bg-background/10" />
+          <Separator className="my-8 bg-slate-700/40" />
 
-          <p className="text-center text-xs text-background/40">
+          <p className="text-center text-xs text-slate-400/70">
             &copy; {CURRENT_YEAR} MAKLIN. All rights reserved.
           </p>
         </div>

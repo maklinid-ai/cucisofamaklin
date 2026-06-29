@@ -1,0 +1,66 @@
+export const maklinDesignTokens = {
+  colors: {
+    primary: '#00A88E',
+    primaryHover: '#008C75',
+    primarySoft: '#E8F8F5',
+    darkNavy: '#0F172A',
+    background: '#FFFFFF',
+    backgroundSecondary: '#F8FAFC',
+    border: '#E5E7EB',
+    textPrimary: '#0F172A',
+    textSecondary: '#64748B',
+    success: '#00A88E',
+    warning: '#F59E0B',
+    danger: '#EF4444',
+  },
+  typography: {
+    display: 'text-[clamp(2.5rem,5vw,4.25rem)] font-bold tracking-[-0.02em] leading-[1.1]',
+    h1: 'text-[clamp(2rem,3vw,2.8rem)] font-bold tracking-[-0.02em] leading-[1.1]',
+    h2: 'text-[clamp(1.75rem,2.6vw,2.3rem)] font-bold tracking-[-0.02em] leading-[1.1]',
+    h3: 'text-[clamp(1.25rem,1.8vw,1.5rem)] font-bold tracking-[-0.02em] leading-[1.1]',
+    h4: 'text-[1.125rem] font-bold tracking-[-0.01em] leading-[1.2]',
+    bodyLarge: 'text-[1rem] font-normal leading-[1.7]',
+    body: 'text-[0.95rem] font-normal leading-[1.7]',
+    small: 'text-[0.875rem] font-normal leading-[1.6]',
+    caption: 'text-[0.75rem] font-medium leading-[1.5]',
+  },
+  spacing: {
+    4: '0.25rem',
+    8: '0.5rem',
+    12: '0.75rem',
+    16: '1rem',
+    20: '1.25rem',
+    24: '1.5rem',
+    32: '2rem',
+    40: '2.5rem',
+    48: '3rem',
+    64: '4rem',
+    80: '5rem',
+    96: '6rem',
+    120: '7.5rem',
+  },
+  radius: {
+    button: '12px',
+    card: '16px',
+    image: '20px',
+    section: '24px',
+  },
+  shadow: {
+    soft: '0 10px 30px rgba(15, 23, 42, 0.06)',
+    softLg: '0 18px 42px rgba(15, 23, 42, 0.08)',
+  },
+  transition: {
+    base: '300ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+  },
+  container: {
+    max: '1280px',
+  },
+  breakpoints: {
+    sm: '640px',
+    md: '768px',
+    lg: '1024px',
+    xl: '1280px',
+  },
+} as const
+
+export type MaklinDesignTokens = typeof maklinDesignTokens
